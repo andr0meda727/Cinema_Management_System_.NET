@@ -1,7 +1,6 @@
 ﻿using Cinema_Management_System.Models.Cinema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Net.Sockets;
 
 public class Screening
 {
