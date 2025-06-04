@@ -5,15 +5,9 @@ namespace Cinema_Management_System.Models.Cinema
 {
     public enum SeatTypes
     {
-        Standard,
-        Double,
-        Vip
-    }
-
-    public enum SeatStatus
-    {
-        Free,
-        Occupied
+        STANDARD,
+        DOUBLE,
+        VIP
     }
 
     public class Seat
@@ -36,7 +30,7 @@ namespace Cinema_Management_System.Models.Cinema
         public SeatTypes SeatType { get; set; }
 
         [Required]
-        public SeatStatus SeatStatus { get; set; }
+        public bool SeatStatus { get; set; } // 0 - free, 1 - occupied
 
         [ForeignKey("ScreeningRoomId")]
         public ScreeningRoom ScreeningRoom { get; set; }
