@@ -1,6 +1,12 @@
-﻿namespace Cinema_Management_System.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace Cinema_Management_System.Controllers
 {
-    public class HomeController
+    public class HomeController : Controller
     {
+        public IActionResult Index()
+        {
+            return View(); // szuka Views/Home/Index.cshtml
+        }
     }
 }
