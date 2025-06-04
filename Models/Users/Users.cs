@@ -2,13 +2,6 @@
 
 namespace Cinema_Management_System.Models.Users
 {
-    public enum Role
-    {
-        Admin,
-        Employee,
-        Customer
-    }
-
     public class User
     {
         [Key]
@@ -20,9 +13,6 @@ namespace Cinema_Management_System.Models.Users
 
         [Required]
         public string PasswordHash { get; set; } = string.Empty;
-
-        [Required]
-        public Role Role { get; set; } = Role.Customer;
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
