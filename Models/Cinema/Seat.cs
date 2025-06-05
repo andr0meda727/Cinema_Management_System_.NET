@@ -34,6 +34,8 @@ namespace Cinema_Management_System.Models.Cinema
 
         [ForeignKey("ScreeningRoomId")]
         public ScreeningRoom ScreeningRoom { get; set; }
+
+        public Ticket Ticket { get; set; }
     }
 
 }

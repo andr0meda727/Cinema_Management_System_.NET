@@ -29,5 +29,5 @@ public class Screening
     [ForeignKey("ScreeningRoomId")]
     public ScreeningRoom ScreeningRoom { get; set; }
 
-    public ICollection<Ticket> Tickets { get; set; }
+    public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }

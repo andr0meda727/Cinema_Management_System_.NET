@@ -44,6 +44,6 @@ namespace Cinema_Management_System.Models.Cinema
         [StringLength(255)]
         public string? ImagePath { get; set; }
 
-        public ICollection<Screening> Screenings { get; set; }
+        public ICollection<Screening> Screenings { get; set; } = new List<Screening>();
     }
 }
