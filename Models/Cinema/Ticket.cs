@@ -20,8 +20,8 @@ namespace Cinema_Management_System.Models.Cinema
 
         [Required]
         [Column(TypeName = "decimal(8,2)")]
-        // FinalPrice = BasePrice (different screenings have different base prices) * multiplier (based on the seattype (standard, double, vip)
         public decimal FinalPrice { get; set; }
+
         [ForeignKey("ScreeningId")]
         public Screening Screening { get; set; }
 
