@@ -1,4 +1,4 @@
-﻿namespace Cinema_Management_System.DTOs
+﻿namespace Cinema_Management_System.DTOs.Tickets
 {
     public class BasicTicketDto
     {
