@@ -15,10 +15,12 @@ namespace Cinema_Management_System.Mappers
         [MapProperty("Screening.DateStartTime", nameof(BasicTicketDto.DateStartTime))]
         [MapProperty("Screening.ScreeningRoom.Name", nameof(DetailedTicketDto.ScreeningRoomName))]
         [MapProperty("Seat.Row", nameof(DetailedTicketDto.SeatRow))]
-        [MapProperty("Seat.SeatNumber", nameof(DetailedTicketDto.SeatNumber)]
+        [MapProperty("Seat.SeatNumber", nameof(DetailedTicketDto.SeatNumber))]
         [MapProperty("Screening.Movie.AgeCategory", nameof(DetailedTicketDto.AgeCategory))]
         [MapProperty("Screening.Movie.ImagePath", nameof(DetailedTicketDto.MoviePosterUrl))]
         [MapProperty("Screening.DateEndTime", nameof(DetailedTicketDto.DateEndTime))]
         public partial DetailedTicketDto ToDetailedDto(Ticket ticket);
+
+        //public partial List<BasicTicketDto> ToDtoList(IEnumerable<Ticket> tickets);
     }
 }

@@ -18,12 +18,14 @@ namespace Cinema_Management_System.Services
         public async Task<Ticket> CreateTicketAsync(int screeningId, int seatId, int userId)
         {
             var screening = await _context.Screenings.FirstOrDefaultAsync(s => s.Id == screeningId);
-            if (screening == null) {
+            if (screening == null)
+            {
                 throw new Exception("Invalid screening");
             }
 
-            var seat = await _context.Seats.FirstOrDefaultAsync(s => s.Id ==  seatId);
-            if (seat == null) {
+            var seat = await _context.Seats.FirstOrDefaultAsync(s => s.Id == seatId);
+            if (seat == null)
+            {
                 throw new Exception("Invalid seat");
             }
 
@@ -42,5 +44,14 @@ namespace Cinema_Management_System.Services
 
             return ticket;
         }
+        //    public async Task<List<BasicTicketDto>> GetUserTickets(int userId)
+        //    {
+        //        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        //        if (user == null)
+        //        {
+        //            throw new Exception("Invalid user");
+        //        }
+
+        //    }
     }
 }
