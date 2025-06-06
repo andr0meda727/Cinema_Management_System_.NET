@@ -1,4 +1,4 @@
-﻿@model Cinema_Management_System.DTOs.RegisterDTO
+﻿@model Cinema_Management_System.DTOs.Auth.RegisterDTO
 
 @{
     ViewData["Title"] = "Rejestracja";
@@ -8,9 +8,9 @@
 
 <form asp-controller="Auth" asp-action="Register" method="post">
     <div>
-        <label asp-for="Nick"></label>
-        <input asp-for="Nick" class="form-control" />
-        <span asp-validation-for="Nick" class="text-danger"></span>
+        <label asp-for="UserName"></label>
+        <input asp-for="UserName" class="form-control" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
 
     <div>
@@ -30,4 +30,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-} *@
+}

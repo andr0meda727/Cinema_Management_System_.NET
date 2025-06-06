@@ -21,7 +21,7 @@ namespace Cinema_Management_System
             builder.Services.AddRazorPages();
         
             //databse for users
-            builder.Services.AddDbContext<UserDbContext>(options =>
+            builder.Services.AddDbContext<CinemaDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             //ASP.NET Identity options
@@ -32,7 +32,7 @@ namespace Cinema_Management_System
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 6;
-            }).AddEntityFrameworkStores<UserDbContext>();
+            }).AddEntityFrameworkStores<CinemaDbContext>();
 
             /*  var authenticationSettings = new AuthenticationSettings();
 
