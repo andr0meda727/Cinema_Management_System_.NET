@@ -1,6 +1,9 @@
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+using Cinema_Management_System.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace Cinema_Management_System
 {
     public class Program
@@ -11,6 +14,9 @@ namespace Cinema_Management_System
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddDbContext<CinemaDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
             var app = builder.Build();
 

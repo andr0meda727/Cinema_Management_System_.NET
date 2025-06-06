@@ -41,6 +41,9 @@ namespace Cinema_Management_System.Models.Cinema
         [StringLength(100)]
         public AgeCategory AgeCategory { get; set; }
 
-        public ICollection<Screening> Screenings { get; set; }
+        [StringLength(255)]
+        public string? ImagePath { get; set; }
+
+        public ICollection<Screening> Screenings { get; set; } = new List<Screening>();
     }
 }

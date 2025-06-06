@@ -1,14 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Cinema_Management_System.Models.Cinema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Cinema_Management_System.Models.Users
 {
-    public enum Role
-    {
-        Admin,
-        Employee,
-        Customer
-    }
-
     public class User
     {
         [Key]
@@ -22,9 +16,8 @@ namespace Cinema_Management_System.Models.Users
         public string PasswordHash { get; set; } = string.Empty;
 
         [Required]
-        public Role Role { get; set; } = Role.Customer;
-
-        [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }
