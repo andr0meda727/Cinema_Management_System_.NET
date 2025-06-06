@@ -1,7 +1,6 @@
 ﻿using Cinema_Management_System.Models.Cinema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Net.Sockets;
 
 public class Screening
 {
@@ -30,5 +29,5 @@ public class Screening
     [ForeignKey("ScreeningRoomId")]
     public ScreeningRoom ScreeningRoom { get; set; }
 
-    public ICollection<Ticket> Tickets { get; set; }
+    public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }

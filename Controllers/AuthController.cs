@@ -1,4 +1,4 @@
-﻿using Cinema_Management_System.DTOs;
+﻿using Cinema_Management_System.DTOs.Auth;
 using Cinema_Management_System.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,10 +25,10 @@ namespace Cinema_Management_System.Controllers
 
         // POST: /Auth/Login
         [HttpPost]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login(LoginDTO model)
         {
             //TODO: fix this and implement DTO
-            var result = await _signInManager.PasswordSignInAsync(username, password, isPersistent: false, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
             if (result.Succeeded)
             {
                 Console.WriteLine("Zalogowano poprawnie!");
@@ -58,9 +58,8 @@ namespace Cinema_Management_System.Controllers
 
             var user = new User
             {
-                UserName = model.Email,
+                UserName = model.UserName,
                 Email = model.Email,
-                Nick = model.Nick,
                 CreatedAt = DateTime.Now,
                 RoleId = 1 //  default User
             };

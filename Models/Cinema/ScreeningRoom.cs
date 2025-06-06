@@ -32,5 +32,8 @@ namespace Cinema_Management_System.Models.Cinema
         [Range(1, 1000)]
         [Display(Name = "Number of Seats")]
         public int NumberOfSeats { get; set; }
+
+        public ICollection<Screening> Screenings { get; set; } = new List<Screening>();
+        public ICollection<Seat> Seats { get; set; } = new List<Seat>();
     }
 }

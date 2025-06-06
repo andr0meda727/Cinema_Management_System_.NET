@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Cinema_Management_System.Models.Cinema;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
 namespace Cinema_Management_System.Models.Users
@@ -7,7 +8,7 @@ namespace Cinema_Management_System.Models.Users
     {
         [Required]
         public string Nick { get; set; }
-
+       
         [Required]
         public int RoleId { get; set; }
 
@@ -15,5 +16,7 @@ namespace Cinema_Management_System.Models.Users
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }

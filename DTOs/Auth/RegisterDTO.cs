@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Cinema_Management_System.DTOs
+namespace Cinema_Management_System.DTOs.Auth
 {
     public class RegisterDTO
     {
         [Required]
-        public string Nick { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [EmailAddress]

@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+using Cinema_Management_System.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace Cinema_Management_System
 {
     public class Program
