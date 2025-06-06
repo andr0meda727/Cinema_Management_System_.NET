@@ -1,29 +1,33 @@
-﻿@* @model Cinema_Management_System.DTOs.RegisterDTO
+﻿@model Cinema_Management_System.DTOs.Auth.RegisterDTO
+
 @{
     ViewData["Title"] = "Rejestracja";
 }
 
 <h2>Rejestracja</h2>
 
-<form asp-action="Register" method="post">
+<form asp-controller="Auth" asp-action="Register" method="post">
     <div>
-        <label asp-for="Nick"></label>
-        <input asp-for="Nick" />
-        <span asp-validation-for="Nick" class="text-danger"></span>
+        <label asp-for="UserName"></label>
+        <input asp-for="UserName" class="form-control" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
+
     <div>
         <label asp-for="Email"></label>
-        <input asp-for="Email" />
+        <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
+
     <div>
         <label asp-for="Password"></label>
-        <input asp-for="Password" type="password" />
+        <input asp-for="Password" class="form-control" type="password" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
-    <button type="submit">Zarejestruj</button>
+
+    <button type="submit" class="btn btn-primary mt-2">Zarejestruj</button>
 </form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-} *@
+}

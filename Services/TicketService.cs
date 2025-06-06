@@ -15,7 +15,7 @@ namespace Cinema_Management_System.Services
             _context = context;
         }
 
-        public async Task<Ticket> CreateTicketAsync(int screeningId, int seatId, int userId)
+        public async Task<Ticket> CreateTicketAsync(int screeningId, int seatId, string userId)
         {
             var screening = await _context.Screenings.FirstOrDefaultAsync(s => s.Id == screeningId);
             if (screening == null)

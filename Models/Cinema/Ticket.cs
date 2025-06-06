@@ -16,7 +16,7 @@ namespace Cinema_Management_System.Models.Cinema
         public int SeatId { get; set; }
 
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(8,2)")]

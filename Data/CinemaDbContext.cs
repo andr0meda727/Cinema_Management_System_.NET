@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Cinema_Management_System.Models.Cinema;
 using Cinema_Management_System.Models.Users;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Cinema_Management_System.Data
 {
-    public class CinemaDbContext : DbContext
+    public class CinemaDbContext : IdentityDbContext<User>
     {
         public CinemaDbContext(DbContextOptions options) : base(options) { }
 
@@ -13,8 +14,7 @@ namespace Cinema_Management_System.Data
         public DbSet<ScreeningRoom> ScreeningRooms { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<User> Users { get; set; }
-
+        public DbSet<Role> Roles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
