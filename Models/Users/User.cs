@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Cinema_Management_System.Models.Users
 {
-    public class User : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
 
         [Required]

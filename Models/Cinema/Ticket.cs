@@ -29,6 +29,6 @@ namespace Cinema_Management_System.Models.Cinema
         public Seat Seat { get; set; }
 
         [ForeignKey("UserId")]
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

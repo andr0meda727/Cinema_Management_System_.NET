@@ -1,23 +1,19 @@
 ﻿using Cinema_Management_System.DTOs.Auth;
-using Cinema_Management_System.Models.Users;
-using Microsoft.AspNetCore.Identity;
+using Cinema_Management_System.Services.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema_Management_System.Controllers
 {
     public class AuthController : Controller
     {
+        private readonly IAuthService _authService;
 
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
-
-        public AuthController(SignInManager<User> signInManager, UserManager<User> userManager)
+        public AuthController(IAuthService authService)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
+            _authService = authService;
         }
 
-        [HttpGet]
+       [HttpGet]
         public IActionResult Login()
         {
             return View(); // Views/Auth/Login.cshtml
@@ -27,19 +23,18 @@ namespace Cinema_Management_System.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginDTO model)
         {
-            //TODO: fix this and implement DTO
-            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
+            var result = await _authService.LoginAsync(model);
+
             if (result.Succeeded)
             {
-                Console.WriteLine("Zalogowano poprawnie!");
                 return RedirectToAction("Index", "Home");
             }
-            else {
-                Console.WriteLine("error");
-            }
 
-            ModelState.AddModelError(string.Empty, "Nieprawidłowy login lub hasło.");
-            return View();
+            foreach (var error in result.IdentityErrors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(model);
         }
 
 
@@ -56,27 +51,19 @@ namespace Cinema_Management_System.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var user = new User
-            {
-                UserName = model.UserName,
-                Email = model.Email,
-                CreatedAt = DateTime.Now,
-                RoleId = 1 //  default User
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await _authService.RegisterAsync(model);
 
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index", "Home");
             }
 
-            foreach (var error in result.Errors)
+            foreach (var error in result.IdentityErrors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 
-            return View();
+            return View(model);
         }
        
     }
