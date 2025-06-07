@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Cinema_Management_System.Data
 {
-    public class CinemaDbContext : IdentityDbContext<User>
+    public class CinemaDbContext : IdentityDbContext<ApplicationUser>
     {
         public CinemaDbContext(DbContextOptions options) : base(options) { }
 

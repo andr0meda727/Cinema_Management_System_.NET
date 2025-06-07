@@ -1,13 +1,11 @@
 using Cinema_Management_System.Data;
 using Cinema_Management_System.Models.Users;
-using Microsoft.EntityFrameworkCore;
+using Cinema_Management_System.Services.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
-using Cinema_Management_System.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace Cinema_Management_System
 {
@@ -24,8 +22,10 @@ namespace Cinema_Management_System
             builder.Services.AddDbContext<CinemaDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddScoped<IAuthService, AuthService>();
+
             //ASP.NET Identity options
-            builder.Services.AddDefaultIdentity<User>(options =>
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireDigit = true;
