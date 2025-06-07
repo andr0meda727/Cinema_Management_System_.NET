@@ -1,4 +1,5 @@
-﻿using Cinema_Management_System.Services;
+﻿using Cinema_Management_System.Models;
+using Cinema_Management_System.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema_Management_System.Controllers
@@ -14,10 +15,18 @@ namespace Cinema_Management_System.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Screening()
+        public async Task<IActionResult> Screening(DateTime? date)
         {
-            var screenings = await _screeningService.GetUpcomingScreeningsAsync();
-            return View(screenings);
+            var selectedDate = date ?? DateTime.Today;
+            var screenings = await _screeningService.GetScreeningsAsyncDate(selectedDate);
+
+            var model = new ScreeningViewModel
+            {
+                SelectedDate = selectedDate,
+                Screenings = screenings
+            };
+
+            return View(model);
         }
     }
 }

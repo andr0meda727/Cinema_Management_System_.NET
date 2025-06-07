@@ -16,15 +16,14 @@ namespace Cinema_Management_System.Services
             _mapper = mapper;
         }
 
-        public async Task<List<BasicScreeningDTO>> GetUpcomingScreeningsAsync(int daysAhead = 7)
+        public async Task<List<BasicScreeningDTO>> GetScreeningsAsyncDate(DateTime date)
         {
-            var fromDate = DateTime.Now;
-            var toDate = fromDate.AddDays(daysAhead);
+            var startOfDay = date.Date;
+            var endOfDay = date.Date.AddDays(1).AddTicks(-1);
 
             var screenings = await _context.Screenings
                 .Include(s => s.Movie)
-                .Include(s => s.ScreeningRoom)
-                .Where(s => s.DateStartTime >= fromDate && s.DateStartTime <= toDate)
+                .Where(s => s.DateStartTime >= startOfDay && s.DateStartTime <= endOfDay)
                 .OrderBy(s => s.DateStartTime)
                 .ToListAsync();
 
