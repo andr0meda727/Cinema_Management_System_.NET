@@ -30,6 +30,7 @@ namespace Cinema_Management_System
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ScreeningMapper>();
             builder.Services.AddScoped<ScreeningService>();
+            builder.Services.AddScoped<ICookieService, CookieService>();
 
             //ASP.NET Identity options
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
