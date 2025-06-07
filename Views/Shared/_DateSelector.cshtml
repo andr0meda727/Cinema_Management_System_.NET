@@ -1,0 +1,22 @@
+﻿@model Cinema_Management_System.Models.ScreeningViewModel
+
+@{
+    var today = DateTime.Today;
+    var selectedDate = Model.SelectedDate;
+}
+
+<div class="mb-4">
+    <div class="btn-group" role="group">
+        @for (int i = 0; i < 10; i++)
+        {
+            var date = today.AddDays(i);
+            var isActive = date.Date == selectedDate;
+
+            <a href="@Url.Action("Screening", "Screening", new { date = date.ToString("yyyy-MM-dd") })"
+               class="btn @(isActive ? "btn-primary" : "btn-outline-primary")"
+               style="min-width: 110px; text-align: center">
+                <div>@date.ToString("d")</div>
+            </a>
+        }
+    </div>
+</div>
