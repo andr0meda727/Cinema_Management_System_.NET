@@ -44,7 +44,7 @@ namespace Cinema_Management_System.Controllers.Api
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDTO model)
         {
-            var result = await _authService.RegisterAsync(model);
+            var result = await _authService.RegisterUserAsync(model);
             if (result.Succeeded)
                 return Ok(new { message = "Registration successful." });
 

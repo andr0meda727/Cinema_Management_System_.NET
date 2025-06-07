@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Kino</title>
+    <title>@ViewData["Title"] - Cinema</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -13,36 +13,25 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container" style="max-width: 1200px">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">KinoAmol</a>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">CinemaKrakow</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav w-100">
+
                         <li class="nav-item">
-                            <a class="nav-link me-3" asp-controller="Screening" asp-action="Index">Repertuar</a>
+                            <a class="nav-link me-3" asp-controller="Screening">Repertuar</a>
                         </li>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item"><a class="nav-link me-3" asp-controller="Admin" asp-action="RegisterEmployee">Dodaj pracownika</a></li>
-                        }
-                        <li class="nav-item">
-                            <a class="nav-link me-3" asp-controller="Tickets" asp-action="Tickets">Moje bilety</a>
-                        </li>
+
                         <li class="nav-item ms-auto">
                             <a class="nav-link me-3" asp-controller="Auth" asp-action="Login">Logowanie</a>
                         </li>
                         <li class="nav-item pe-5">
                             <a class="nav-link" asp-controller="Auth" asp-action="Register">Rejestracja</a>
                         </li>
-                        @if (User.Identity?.IsAuthenticated ?? false)
-                        {
-                            <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-outline-danger">Wyloguj</button>
-                            </form>
-                        }
+
                     </ul>
                 </div>
             </div>
@@ -56,7 +45,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container" style="max-width: 1200px">
-            &copy; 2025 - System zarządzania kinem - <a asp-area="" asp-page="/Privacy">Prywatność</a>
+            &copy; 2025 - Cinema_Management_System - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 
