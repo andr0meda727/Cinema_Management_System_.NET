@@ -23,12 +23,23 @@
                         <li class="nav-item">
                             <a class="nav-link me-3" asp-controller="Home" asp-action="Index">Strona główna</a>
                         </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li><a asp-controller="Admin" asp-action="RegisterEmployee">Add Employee</a></li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link me-3" asp-controller="Auth" asp-action="Login">Logowanie</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Auth" asp-action="Register">Rejestracja</a>
                         </li>
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline-danger">Wyloguj</button>
+                            </form>
+                        }
                     </ul>
                 </div>
             </div>

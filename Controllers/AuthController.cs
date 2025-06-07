@@ -1,42 +1,61 @@
-﻿using Cinema_Management_System.DTOs.Auth;
+﻿using System.Security.Claims;
+using Cinema_Management_System.DTOs.Auth;
+using Cinema_Management_System.Models.Users;
 using Cinema_Management_System.Services.Auth;
+using Cinema_Management_System.Services.User;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema_Management_System.Controllers
 {
+
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
-
-        public AuthController(IAuthService authService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public AuthController(IAuthService authService,
+                    UserManager<ApplicationUser> userManager)
         {
             _authService = authService;
+            _userManager = userManager;
         }
 
-       [HttpGet]
+        [HttpGet]
         public IActionResult Login()
         {
             return View(); // Views/Auth/Login.cshtml
         }
-
+        
         // POST: /Auth/Login
         [HttpPost]
         public async Task<IActionResult> Login(LoginDTO model)
         {
-            var result = await _authService.LoginAsync(model);
+            var token = await _authService.LoginAsync(model);
 
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            if (token == null)
+                return Unauthorized("Invalid username or password.");
 
-            foreach (var error in result.IdentityErrors)
+            Response.Cookies.Append("jwt", token, new CookieOptions
             {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-            return View(model);
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(10)
+            });
+
+            return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("jwt");
+
+            return RedirectToAction("Login", "Auth");
+        }
 
         [HttpGet]
         public IActionResult Register()
@@ -48,22 +67,11 @@ namespace Cinema_Management_System.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterDTO model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
             var result = await _authService.RegisterAsync(model);
-
             if (result.Succeeded)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+                return RedirectToAction("Login", "Auth");
 
-            foreach (var error in result.IdentityErrors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-
-            return View(model);
+            return BadRequest(result.Errors);
         }
        
     }

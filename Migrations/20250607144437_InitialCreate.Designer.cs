@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinema_Management_System.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    [Migration("20250606185336_AfterMerging")]
-    partial class AfterMerging
+    [Migration("20250607144437_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -148,24 +148,7 @@ namespace Cinema_Management_System.Migrations
                     b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("Cinema_Management_System.Models.Users.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("Cinema_Management_System.Models.Users.User", b =>
+            modelBuilder.Entity("Cinema_Management_System.Models.Users.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -193,10 +176,6 @@ namespace Cinema_Management_System.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Nick")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -213,9 +192,6 @@ namespace Cinema_Management_System.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -236,8 +212,6 @@ namespace Cinema_Management_System.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -436,7 +410,7 @@ namespace Cinema_Management_System.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Cinema_Management_System.Models.Users.User", "User")
+                    b.HasOne("Cinema_Management_System.Models.Users.ApplicationUser", "User")
                         .WithMany("Tickets")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -447,17 +421,6 @@ namespace Cinema_Management_System.Migrations
                     b.Navigation("Seat");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Cinema_Management_System.Models.Users.User", b =>
-                {
-                    b.HasOne("Cinema_Management_System.Models.Users.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -471,7 +434,7 @@ namespace Cinema_Management_System.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Cinema_Management_System.Models.Users.User", null)
+                    b.HasOne("Cinema_Management_System.Models.Users.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -480,7 +443,7 @@ namespace Cinema_Management_System.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Cinema_Management_System.Models.Users.User", null)
+                    b.HasOne("Cinema_Management_System.Models.Users.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -495,7 +458,7 @@ namespace Cinema_Management_System.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cinema_Management_System.Models.Users.User", null)
+                    b.HasOne("Cinema_Management_System.Models.Users.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -504,7 +467,7 @@ namespace Cinema_Management_System.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Cinema_Management_System.Models.Users.User", null)
+                    b.HasOne("Cinema_Management_System.Models.Users.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -548,7 +511,7 @@ namespace Cinema_Management_System.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Cinema_Management_System.Models.Users.User", b =>
+            modelBuilder.Entity("Cinema_Management_System.Models.Users.ApplicationUser", b =>
                 {
                     b.Navigation("Tickets");
                 });
