@@ -1,6 +1,11 @@
 ﻿using Cinema_Management_System.DTOs.Auth;
 using Microsoft.AspNetCore.Identity;
 using Cinema_Management_System.Models.Users;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.Extensions.Options;
 
 namespace Cinema_Management_System.Services.Auth
 {
@@ -8,49 +13,67 @@ namespace Cinema_Management_System.Services.Auth
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-
-        public AuthService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        private readonly AuthenticationSettings _authSettings;
+        public AuthService(SignInManager<ApplicationUser> signInManager,
+                    UserManager<ApplicationUser> userManager,
+                    AuthenticationSettings authSettings)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _authSettings = authSettings;
         }
 
-        public async Task<AuthResult> RegisterAsync(RegisterDTO model)
+        public async Task<RegisterResult> RegisterAsync(RegisterDTO model)
         {
             var user = new ApplicationUser
             {
                 UserName = model.UserName,
                 Email = model.Email,
-                CreatedAt = DateTime.Now,
-                RoleId = 1 //  default User
+                CreatedAt = DateTime.UtcNow,
+                RoleId = 1 // default User
             };
+
             var result = await _userManager.CreateAsync(user, model.Password);
+            var errors = result.Errors.Select(e => e.Description);
 
-
-            if (result.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, isPersistent: false);
-            }
-
-            return new AuthResult
+            return new RegisterResult
             {
                 Succeeded = result.Succeeded,
-                IdentityErrors = result.Errors
+                Errors = errors
             };
 
         }
 
-        public async Task<AuthResult> LoginAsync(LoginDTO model)
+        public async Task<string?> LoginAsync(LoginDTO model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+                return null;
 
-            return new AuthResult
+            var claims = new List<Claim>
             {
-                Succeeded = result.Succeeded,
-                IdentityErrors = result.Succeeded ? Enumerable.Empty<IdentityError>() : [new IdentityError { Description = "Invalid credentials" }]
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, "User") // dynamic later
             };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authSettings.JwtKey));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expires = DateTime.UtcNow.AddDays(_authSettings.JwtExpireDays);
+
+            var token = new JwtSecurityToken(
+                issuer: _authSettings.JwtIssuer,
+                audience: _authSettings.JwtIssuer,
+                claims: claims,
+                expires: expires,
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
+    
 
     public class AuthResult {
         public bool Succeeded { get; set; }

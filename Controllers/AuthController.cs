@@ -23,18 +23,11 @@ namespace Cinema_Management_System.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginDTO model)
         {
-            var result = await _authService.LoginAsync(model);
+            var token = await _authService.LoginAsync(model);
+            if (token == null)
+                return Unauthorized("Invalid username or password.");
 
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            foreach (var error in result.IdentityErrors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-            return View(model);
+            return Ok(new { Token = token });
         }
 
 
@@ -48,22 +41,11 @@ namespace Cinema_Management_System.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterDTO model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
             var result = await _authService.RegisterAsync(model);
-
             if (result.Succeeded)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+                return Ok("User registered successfully.");
 
-            foreach (var error in result.IdentityErrors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-
-            return View(model);
+            return BadRequest(result.Errors);
         }
        
     }

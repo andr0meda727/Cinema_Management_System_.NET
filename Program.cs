@@ -34,7 +34,7 @@ namespace Cinema_Management_System
                 options.Password.RequiredLength = 6;
             }).AddEntityFrameworkStores<CinemaDbContext>();
 
-            /*  var authenticationSettings = new AuthenticationSettings();
+              var authenticationSettings = new AuthenticationSettings();
 
               builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
 
@@ -51,12 +51,12 @@ namespace Cinema_Management_System
                   cfg.SaveToken = true;
                   cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                   {
-                      ValidIssuer = authenticationSettings.JwtIssuser,
-                      ValidAudience = authenticationSettings.JwtIssuser,
+                      ValidIssuer = authenticationSettings.JwtIssuer,
+                      ValidAudience = authenticationSettings.JwtIssuer,
                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
                   };
               });
-  */
+  
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
