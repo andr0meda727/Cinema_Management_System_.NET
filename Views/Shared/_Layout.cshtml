@@ -25,7 +25,7 @@
                         </li>
                         @if (User.IsInRole("Admin"))
                         {
-                            <li><a asp-controller="Admin" asp-action="RegisterEmployee">Add Employee</a></li>
+                            <li class="nav-item"><a class="nav-link me-3" asp-controller="Admin" asp-action="RegisterEmployee">Add Employee</a></li>
                         }
                         <li class="nav-item">
                             <a class="nav-link me-3" asp-controller="Tickets" asp-action="Tickets">Moje bilety</a>
