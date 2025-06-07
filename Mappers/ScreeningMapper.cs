@@ -8,7 +8,7 @@ namespace Cinema_Management_System.Mappers
     {
         [MapProperty(nameof(Screening.Movie.Title), nameof(BasicScreeningDTO.Title))]
         [MapProperty(nameof(Screening.Movie.ImagePath), nameof(BasicScreeningDTO.MoviePosterUrl))]
-        public partial BasicScreeningDTO ToBasicDTO(Screening screening);
+        public partial BasicScreeningDTO ScreeningToScreeningBasicDTO(Screening screening);
 
         [MapProperty(nameof(Screening.Movie.Title), nameof(BasicScreeningDTO.Title))]
         [MapProperty(nameof(Screening.Movie.ImagePath), nameof(BasicScreeningDTO.MoviePosterUrl))]
@@ -16,7 +16,7 @@ namespace Cinema_Management_System.Mappers
         [MapProperty(nameof(Screening.Movie.AgeCategory), nameof(DetailedScreeningDTO.AgeCategory))]
         [MapProperty(nameof(Screening.ScreeningRoom.Name), nameof(DetailedScreeningDTO.ScreeningRoomName))]
         [MapProperty(nameof(Screening.ScreeningRoom.Format), nameof(DetailedScreeningDTO.ScreeningRoomFormat))]
-        public partial DetailedScreeningDTO ToDetailedDTO(Screening screening);
+        public partial DetailedScreeningDTO ScreeningToScreeningDetailedDTO(Screening screening);
 
     }
 }
