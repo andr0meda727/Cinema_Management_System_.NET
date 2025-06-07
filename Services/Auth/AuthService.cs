@@ -23,7 +23,7 @@ namespace Cinema_Management_System.Services.Auth
             _authSettings = authSettings;
         }
 
-        public async Task<RegisterResult> RegisterAsync(RegisterDTO model)
+        public async Task<RegisterResult> RegisterUserAsync(RegisterDTO model)
         {
             var user = new ApplicationUser
             {

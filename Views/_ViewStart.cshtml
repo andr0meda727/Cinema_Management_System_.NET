@@ -1,3 +1,20 @@
 ﻿@{
-    Layout = "_Layout";
+    var user = Context.User;
+
+    if (!user.Identity.IsAuthenticated)
+    {
+        Layout = "_Layout_Guest";
+    }
+    else if (user.IsInRole("Admin"))
+    {
+        Layout = "_Layout_Admin";
+    }
+    else if (user.IsInRole("Employee"))
+    {
+        Layout = "_Layout_Employee";
+    }
+    else
+    {
+        Layout = "_Layout_User";
+    }
 }
