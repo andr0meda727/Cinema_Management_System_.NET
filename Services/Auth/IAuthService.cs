@@ -5,7 +5,7 @@ namespace Cinema_Management_System.Services.Auth
 {
     public interface IAuthService
     {
-        Task<RegisterResult> RegisterAsync(RegisterDTO registerDTO);
+        Task<RegisterResult> RegisterUserAsync(RegisterDTO registerDTO);
         Task<string?> LoginAsync(LoginDTO loginDTO);
         Task<IdentityResult> RegisterEmployeeAsync(RegisterDTO model);
 

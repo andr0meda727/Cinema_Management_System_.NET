@@ -67,7 +67,7 @@ namespace Cinema_Management_System.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterDTO model)
         {
-            var result = await _authService.RegisterAsync(model);
+            var result = await _authService.RegisterUserAsync(model);
             if (result.Succeeded)
                 return RedirectToAction("Login", "Auth");
 
