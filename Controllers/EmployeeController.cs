@@ -31,22 +31,22 @@ namespace Cinema_Management_System.Controllers
             return View();
         }
 
-        public IActionResult AddHall()
+        public IActionResult AddScreeningRoom()
         {
             return View();
         }
 
-        public IActionResult EditHalls()
+        public IActionResult EditScreeningRooms()
         {
             return View();
         }
 
-        public IActionResult DeleteHall()
+        public IActionResult DeleteScreeningRoom()
         {
             return View();
         }
 
-        public IActionResult BrowseHalls()
+        public IActionResult BrowseScreeningRooms()
         {
             return View();
         }
