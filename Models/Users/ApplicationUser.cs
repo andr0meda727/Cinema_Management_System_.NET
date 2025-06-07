@@ -8,11 +8,6 @@ namespace Cinema_Management_System.Models.Users
     {
 
         [Required]
-        public int RoleId { get; set; }
-
-        public virtual Role? Role { get; set; }
-
-        [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
