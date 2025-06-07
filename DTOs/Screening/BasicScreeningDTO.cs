@@ -2,6 +2,7 @@
 {
     public class BasicScreeningDTO
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public DateTime DateStartTime { get; set; }
         public DateTime DateEndTime { get; set; }

@@ -1,29 +1,29 @@
 ﻿@model Cinema_Management_System.DTOs.Auth.RegisterDTO
 
 @{
-    ViewData["Title"] = "Add Employee";
+    ViewData["Title"] = "Dodaj pracownika";
 }
 
-<h2>Add New Employee</h2>
+<h2>Dodaj nowego pracownika</h2>
 
 <form asp-action="RegisterEmployee" method="post">
-    <div class="form-group">
-        <label asp-for="UserName"></label>
+    <div class="mb-2 form-group">
+        <label asp-for="UserName">Nazwa użytkownika</label>
         <input asp-for="UserName" class="form-control" />
         <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="mb-2 form-group">
         <label asp-for="Email"></label>
         <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" />
+    <div class="mb-1 form-group">
+        <label asp-for="Password">Hasło</label>
+        <input type="password" asp-for="Password" class="form-control" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary mt-2">Create Employee</button>
+    <button type="submit" class="btn btn-primary mt-2">Zarejestruj pracownika</button>
 </form>
