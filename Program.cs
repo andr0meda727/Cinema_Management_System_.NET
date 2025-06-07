@@ -1,5 +1,7 @@
 using Cinema_Management_System.Data;
+using Cinema_Management_System.Mappers;
 using Cinema_Management_System.Models.Users;
+using Cinema_Management_System.Services;
 using Cinema_Management_System.Services.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -23,6 +25,8 @@ namespace Cinema_Management_System
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<ScreeningMapper>();
+            builder.Services.AddScoped<ScreeningService>();
 
             //ASP.NET Identity options
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
