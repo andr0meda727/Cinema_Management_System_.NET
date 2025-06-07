@@ -11,7 +11,7 @@ namespace Cinema_Management_System
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +59,11 @@ namespace Cinema_Management_System
   
             var app = builder.Build();
 
+            //insert starting roles to db, and admin account
+            using (var scope = app.Services.CreateScope())
+            {
+                await SeedData.InitializeAsync(scope.ServiceProvider);
+            }
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {

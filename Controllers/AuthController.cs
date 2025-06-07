@@ -27,7 +27,7 @@ namespace Cinema_Management_System.Controllers
             if (token == null)
                 return Unauthorized("Invalid username or password.");
 
-            return Ok(new { Token = token });
+            return RedirectToAction("Index", "Home"); ;
         }
 
 
@@ -43,7 +43,7 @@ namespace Cinema_Management_System.Controllers
         {
             var result = await _authService.RegisterAsync(model);
             if (result.Succeeded)
-                return Ok("User registered successfully.");
+                return RedirectToAction("Login", "Auth");
 
             return BadRequest(result.Errors);
         }
