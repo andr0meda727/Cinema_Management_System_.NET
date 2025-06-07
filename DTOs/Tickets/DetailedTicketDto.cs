@@ -2,7 +2,7 @@
 
 namespace Cinema_Management_System.DTOs.Tickets
 {
-    public class DetailedTicketDto : BasicTicketDto
+    public class DetailedTicketDTO : BasicTicketDTO
     {
         public string ScreeningRoomName { get; set; }
         public string SeatRow { get; set; }

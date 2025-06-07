@@ -1,6 +1,6 @@
 ﻿namespace Cinema_Management_System.DTOs.Tickets
 {
-    public class BasicTicketDto
+    public class BasicTicketDTO
     {
         public int Id { get; set; }
         public string MovieTitle { get; set; }
