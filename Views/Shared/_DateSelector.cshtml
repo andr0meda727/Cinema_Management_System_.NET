@@ -12,7 +12,7 @@
             var date = today.AddDays(i);
             var isActive = date.Date == selectedDate;
 
-            <a href="@Url.Action("Screening", "Screening", new { date = date.ToString("yyyy-MM-dd") })"
+            <a href="@Url.Action("", "Screening", new { date = date.ToString("yyyy-MM-dd") })"
                class="btn @(isActive ? "btn-primary" : "btn-outline-primary")"
                style="min-width: 110px; text-align: center">
                 <div>@date.ToString("d")</div>
