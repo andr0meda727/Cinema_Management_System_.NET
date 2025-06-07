@@ -15,7 +15,7 @@ namespace Cinema_Management_System.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Screening(DateTime? date)
+        public async Task<IActionResult> Index(DateTime? date)
         {
             var selectedDate = date ?? DateTime.Today;
             var screenings = await _screeningService.GetScreeningsAsyncDate(selectedDate);
@@ -27,6 +27,20 @@ namespace Cinema_Management_System.Controllers
             };
 
             return View(model);
+        }
+
+        [HttpGet]
+        [Route("Details/{screeningId:int}")]
+        public async Task<IActionResult> Details(int screeningId)
+        {
+            var screening = await _screeningService.GetDetailedScreeningByIdAsync(screeningId);
+
+            if (screening == null)
+            {
+                return NotFound();
+            }
+
+            return View(screening);
         }
     }
 }
