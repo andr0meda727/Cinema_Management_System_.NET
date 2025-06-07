@@ -2,7 +2,6 @@
 {
     public class DetailedScreeningDTO : BasicScreeningDTO
     {
-        public DateTime DateEndTime { get; set; }
         public string ScreeningRoomName { get; set; }
         public string ScreeningRoomFormat { get; set; }
         public decimal BasePrice { get; set; }

@@ -11,5 +11,5 @@ namespace Cinema_Management_System.Models.Users
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
-    }
+    } 
 }

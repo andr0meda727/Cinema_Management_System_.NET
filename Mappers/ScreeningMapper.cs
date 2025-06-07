@@ -8,7 +8,13 @@ namespace Cinema_Management_System.Mappers
     {
         [MapProperty(nameof(Screening.Movie.Title), nameof(BasicScreeningDTO.Title))]
         [MapProperty(nameof(Screening.Movie.ImagePath), nameof(BasicScreeningDTO.MoviePosterUrl))]
-        public partial BasicScreeningDTO ToBasicDTO(Screening screening);
+        public partial BasicScreeningDTO ScreeningToScreeningBasicDTO(Screening screening);
+        public BasicScreeningDTO ScreeningToBasicScreeningDTOWithShortDesc(Screening screening)
+        {
+            var dto = ScreeningToScreeningBasicDTO(screening);
+            dto.ShortDescription = TruncateDescription(screening.Movie.Description);
+            return dto;
+        }
 
         [MapProperty(nameof(Screening.Movie.Title), nameof(BasicScreeningDTO.Title))]
         [MapProperty(nameof(Screening.Movie.ImagePath), nameof(BasicScreeningDTO.MoviePosterUrl))]
@@ -16,7 +22,17 @@ namespace Cinema_Management_System.Mappers
         [MapProperty(nameof(Screening.Movie.AgeCategory), nameof(DetailedScreeningDTO.AgeCategory))]
         [MapProperty(nameof(Screening.ScreeningRoom.Name), nameof(DetailedScreeningDTO.ScreeningRoomName))]
         [MapProperty(nameof(Screening.ScreeningRoom.Format), nameof(DetailedScreeningDTO.ScreeningRoomFormat))]
-        public partial DetailedScreeningDTO ToDetailedDTO(Screening screening);
+        public partial DetailedScreeningDTO ScreeningToScreeningDetailedDTO(Screening screening);
 
+
+        private static string TruncateDescription(string description, int maxLength = 100)
+        {
+            if (string.IsNullOrEmpty(description))
+                return string.Empty;
+
+            return description.Length <= maxLength
+                ? description
+                : description[..maxLength] + "...";
+        }
     }
 }
