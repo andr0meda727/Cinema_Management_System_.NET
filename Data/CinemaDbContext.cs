@@ -14,7 +14,6 @@ namespace Cinema_Management_System.Data
         public DbSet<ScreeningRoom> ScreeningRooms { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<Role> Roles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

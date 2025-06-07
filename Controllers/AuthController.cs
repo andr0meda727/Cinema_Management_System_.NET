@@ -1,35 +1,61 @@
-﻿using Cinema_Management_System.DTOs.Auth;
+﻿using System.Security.Claims;
+using Cinema_Management_System.DTOs.Auth;
+using Cinema_Management_System.Models.Users;
 using Cinema_Management_System.Services.Auth;
+using Cinema_Management_System.Services.User;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema_Management_System.Controllers
 {
+
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
-
-        public AuthController(IAuthService authService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public AuthController(IAuthService authService,
+                    UserManager<ApplicationUser> userManager)
         {
             _authService = authService;
+            _userManager = userManager;
         }
 
-       [HttpGet]
+        [HttpGet]
         public IActionResult Login()
         {
             return View(); // Views/Auth/Login.cshtml
         }
-
+        
         // POST: /Auth/Login
         [HttpPost]
         public async Task<IActionResult> Login(LoginDTO model)
         {
             var token = await _authService.LoginAsync(model);
+
             if (token == null)
                 return Unauthorized("Invalid username or password.");
 
-            return RedirectToAction("Index", "Home"); ;
+            Response.Cookies.Append("jwt", token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(10)
+            });
+
+            return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("jwt");
+
+            return RedirectToAction("Login", "Auth");
+        }
 
         [HttpGet]
         public IActionResult Register()

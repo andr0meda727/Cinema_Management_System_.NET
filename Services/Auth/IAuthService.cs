@@ -1,4 +1,5 @@
 ﻿using Cinema_Management_System.DTOs.Auth;
+using Microsoft.AspNetCore.Identity;
 
 namespace Cinema_Management_System.Services.Auth
 {
@@ -6,6 +7,8 @@ namespace Cinema_Management_System.Services.Auth
     {
         Task<RegisterResult> RegisterAsync(RegisterDTO registerDTO);
         Task<string?> LoginAsync(LoginDTO loginDTO);
+        Task<IdentityResult> RegisterEmployeeAsync(RegisterDTO model);
+
     }
 
     public class RegisterResult

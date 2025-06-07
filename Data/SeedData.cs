@@ -16,14 +16,15 @@ namespace Cinema_Management_System.Data
             context.Database.Migrate();
 
             // Seed roles if not exists
-            if (!context.Roles.Any())
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            string[] roles = ["User", "Employee", "Admin"];
+            foreach (var role in roles)
             {
-                context.Roles.AddRange(
-                    new Role {Name = "User" },
-                    new Role {Name = "Employee" },
-                    new Role {Name = "Admin" }
-                );
-                await context.SaveChangesAsync();
+                if (!await roleManager.RoleExistsAsync(role))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
             }
             // 2. Pobierz rolę "Admin"
             var adminRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == "Admin");
@@ -37,11 +38,14 @@ namespace Cinema_Management_System.Data
                     UserName = "admin",
                     Email = "admin@admin.com",
                     EmailConfirmed = true,
-                    CreatedAt = DateTime.Now,
-                    RoleId = adminRole.Id // <-- już istniejące ID
+                    CreatedAt = DateTime.Now
                 };
 
-                await userManager.CreateAsync(admin, "zaq1@WSX");
+                var result = await userManager.CreateAsync(admin, "zaq1@WSX");
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, "Admin");
+                }
             }
         }
 

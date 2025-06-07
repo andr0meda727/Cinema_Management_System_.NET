@@ -29,13 +29,16 @@ namespace Cinema_Management_System.Services.Auth
             {
                 UserName = model.UserName,
                 Email = model.Email,
-                CreatedAt = DateTime.UtcNow,
-                RoleId = 1 // default User
+                CreatedAt = DateTime.UtcNow
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
             var errors = result.Errors.Select(e => e.Description);
+            if (result.Succeeded)
+            {
 
+                await _userManager.AddToRoleAsync(user, "User");
+            }
             return new RegisterResult
             {
                 Succeeded = result.Succeeded,
@@ -43,7 +46,26 @@ namespace Cinema_Management_System.Services.Auth
             };
 
         }
+        public async Task<IdentityResult> RegisterEmployeeAsync(RegisterDTO model)
+        {
+            var user = new ApplicationUser
+            {
+                UserName = model.UserName,
+                Email = model.Email,
+                EmailConfirmed = true,
+            };
 
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                var roleResult = await _userManager.AddToRoleAsync(user, "Employee");
+                if (!roleResult.Succeeded)
+                    return IdentityResult.Failed(roleResult.Errors.ToArray());
+            }
+
+            return result;
+        }
         public async Task<string?> LoginAsync(LoginDTO model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
@@ -54,9 +76,11 @@ namespace Cinema_Management_System.Services.Auth
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, "User") // dynamic later
+                new Claim(ClaimTypes.Email, user.Email)
             };
+
+            var roles = await _userManager.GetRolesAsync(user);
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authSettings.JwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

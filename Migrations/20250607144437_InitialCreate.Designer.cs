@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinema_Management_System.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    [Migration("20250607121107_InitialCreate")]
+    [Migration("20250607144437_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -193,9 +193,6 @@ namespace Cinema_Management_System.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -216,26 +213,7 @@ namespace Cinema_Management_System.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("RoleId");
-
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Cinema_Management_System.Models.Users.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -443,17 +421,6 @@ namespace Cinema_Management_System.Migrations
                     b.Navigation("Seat");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Cinema_Management_System.Models.Users.ApplicationUser", b =>
-                {
-                    b.HasOne("Cinema_Management_System.Models.Users.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
