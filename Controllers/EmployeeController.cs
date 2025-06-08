@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Cinema_Management_System.Services.Employee;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema_Management_System.Controllers
@@ -6,6 +7,12 @@ namespace Cinema_Management_System.Controllers
     [Authorize(Roles = "Employee")]
     public class EmployeeController : Controller
     {
+        private readonly DeleteMovieService _deleteMovieService;
+
+        public EmployeeController(DeleteMovieService deleteMovieService)
+        {
+            _deleteMovieService = deleteMovieService;
+        }
         public IActionResult Index()
         {
             return View(); // widok: Views/Employee/Index.cshtml
@@ -21,9 +28,10 @@ namespace Cinema_Management_System.Controllers
             return View();
         }
 
-        public IActionResult DeleteMovie()
+        public async Task<IActionResult> DeleteMovie()
         {
-            return View();
+            var movies = await _deleteMovieService.GetAllAsync();
+            return View("~/Views/Employee/Movie/DeleteMovie.cshtml", movies);
         }
 
         public IActionResult BrowseMovies()
