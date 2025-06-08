@@ -11,18 +11,13 @@ namespace Cinema_Management_System.Controllers.Employee
 
         public DeleteMovieController(DeleteMovieService service)
         {
-            Console.WriteLine("Konstruktor DeleteMovieController działa");
-
             _service = service;
         }
 
         [HttpGet]
         public async Task<IActionResult> DeleteMovie()
         {
-            Console.WriteLine("test");
-
             var movies = await _service.GetAllAsync();
-
             return View("~/Views/Employee/Movie/DeleteMovie.cshtml", movies);
         }
 

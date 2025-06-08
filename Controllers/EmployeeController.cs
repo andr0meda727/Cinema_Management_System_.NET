@@ -8,10 +8,12 @@ namespace Cinema_Management_System.Controllers
     public class EmployeeController : Controller
     {
         private readonly DeleteMovieService _deleteMovieService;
+        private readonly DeleteScreeningRoomService _deleteScreeningRoomService;
 
-        public EmployeeController(DeleteMovieService deleteMovieService)
+        public EmployeeController(DeleteMovieService deleteMovieService, DeleteScreeningRoomService deleteScreeningRoomService)
         {
             _deleteMovieService = deleteMovieService;
+            _deleteScreeningRoomService = deleteScreeningRoomService;
         }
         public IActionResult Index()
         {
@@ -49,9 +51,10 @@ namespace Cinema_Management_System.Controllers
             return View();
         }
 
-        public IActionResult DeleteScreeningRoom()
+        public async Task<IActionResult> DeleteScreeningRoom()
         {
-            return View();
+            var screeningRooms = await _deleteScreeningRoomService.GetAllAsync();
+            return View("~/Views/Employee/ScreeningRoom/DeleteScreeningRoom.cshtml", screeningRooms);
         }
 
         public IActionResult BrowseScreeningRooms()
