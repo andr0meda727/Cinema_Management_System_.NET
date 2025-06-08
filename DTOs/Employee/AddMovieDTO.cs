@@ -22,7 +22,7 @@ namespace Cinema_Management_System.DTOs.Employee
         [Display(Name = "Age Category")]
         public AgeCategory AgeCategory { get; set; }
 
-        [Display(Name = "Image URL")]
-        public string? ImagePath { get; set; }
+        [Display(Name = "Movie Poster")]
+        public IFormFile? PosterFile { get; set; }
     }
 }

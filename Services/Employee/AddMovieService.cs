@@ -16,11 +16,29 @@ namespace Cinema_Management_System.Services.Employee
 
         public async Task<bool> AddAsync(AddMovieDTO dto)
         {
-            bool exists = _db.Movies
-            .Any(m => m.Title.ToLower() == dto.Title.ToLower());
-
-            if (exists)
+            //check if film aready exists
+            if (_db.Movies.Any(m => m.Title == dto.Title))
                 return false;
+
+            string? savedPath = null;
+
+            if (dto.PosterFile != null && dto.PosterFile.Length > 0)
+            {
+                var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+
+                if (!Directory.Exists(uploadsDir))
+                    Directory.CreateDirectory(uploadsDir);
+
+                var fileName = $"{Guid.NewGuid()}_{dto.PosterFile.FileName}";
+                var filePath = Path.Combine(uploadsDir, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.PosterFile.CopyToAsync(stream);
+                }
+
+                savedPath = "/uploads/" + fileName;
+            }
 
             var movie = new Movie
             {
@@ -28,7 +46,7 @@ namespace Cinema_Management_System.Services.Employee
                 Description = dto.Description,
                 MovieLength = dto.MovieLength,
                 AgeCategory = dto.AgeCategory,
-                ImagePath = dto.ImagePath
+                ImagePath = savedPath
             };
 
             _db.Movies.Add(movie);

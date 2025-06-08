@@ -2,7 +2,7 @@
 @using Cinema_Management_System.Models.Cinema
 
 <h2>Dodaj film</h2>
-<form asp-action="Add" asp-controller="AddMovie" method="post">
+<form asp-action="Add" asp-controller="AddMovie" method="post" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
 
     <div class="form-group">
@@ -32,10 +32,10 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="ImagePath"></label>
-        <input asp-for="ImagePath" class="form-control" />
-        <span asp-validation-for="ImagePath" class="text-danger"></span>
+        <label asp-for="PosterFile"></label>
+        <input asp-for="PosterFile" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
     </div>
+
 
     <button type="submit" class="btn btn-primary mt-2">Zapisz</button>
 </form>
