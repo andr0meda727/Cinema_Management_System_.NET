@@ -13,7 +13,7 @@ namespace Cinema_Management_System.Controllers
 
         public IActionResult AddMovie()
         {
-            return View();
+            return View("~/Views/Employee/Movie/AddMovie.cshtml");
         }
 
         public IActionResult EditMovies()
