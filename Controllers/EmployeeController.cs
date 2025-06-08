@@ -33,7 +33,7 @@ namespace Cinema_Management_System.Controllers
 
         public IActionResult AddScreeningRoom()
         {
-            return View();
+            return View("~/Views/Employee/ScreeningRoom/AddScreeningRoom.cshtml");
         }
 
         public IActionResult EditScreeningRooms()

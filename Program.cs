@@ -3,6 +3,7 @@ using Cinema_Management_System.Mappers;
 using Cinema_Management_System.Models.Users;
 using Cinema_Management_System.Services;
 using Cinema_Management_System.Services.Auth;
+using Cinema_Management_System.Services.Employee;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -31,6 +32,7 @@ namespace Cinema_Management_System
             builder.Services.AddScoped<ScreeningMapper>();
             builder.Services.AddScoped<ScreeningService>();
             builder.Services.AddScoped<ICookieService, CookieService>();
+            builder.Services.AddScoped<ScreeningRoomService>();
 
             //ASP.NET Identity options
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
