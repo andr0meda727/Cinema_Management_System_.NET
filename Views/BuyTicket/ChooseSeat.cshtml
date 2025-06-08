@@ -180,7 +180,7 @@
                 const seatItem = document.createElement("div");
                 seatItem.className = "selected-seat-item";
                 seatItem.innerHTML = `
-                    <span>Rząd ${seat.row}, Miejsce ${seat.seatNumber} (${getSeatTypeName(seat.seatType)})</span>
+                    <span>Rząd ${seat.row}, Miejsce ${seat.seatNumber} (${seat.seatType})</span>
                     <span>${seat.price.toFixed(2)} zł</span>
                 `;
                 seatsList.appendChild(seatItem);

@@ -64,12 +64,12 @@ namespace Cinema_Management_System.Services
             var screening = await _context.Screenings
                 .Include(s => s.ScreeningRoom)
                 .Include(s => s.Tickets)
-                .FirstOrDefaultAsync(s => s.Id == 4);
+                .FirstOrDefaultAsync(s => s.Id == screeningId);
 
             if (screening == null) return null;
 
             var seats = await _context.Seats
-                .Where(s => s.ScreeningRoomId == 3)
+                .Where(s => s.ScreeningRoomId == screening.ScreeningRoomId)
                 .ToListAsync();
 
             var takenSeatIds = screening.Tickets
