@@ -27,11 +27,11 @@ namespace Cinema_Management_System.Models.Cinema
 
         [Required]
         [StringLength(100)]
-        public string Title { get; set; }
+        public required string Title { get; set; }
 
         [Required]
         [StringLength(5000)]
-        public string Description { get; set; }
+        public required string Description { get; set; }
 
         [Required]
         [Range(0, 1000)]
@@ -41,8 +41,9 @@ namespace Cinema_Management_System.Models.Cinema
         [StringLength(100)]
         public AgeCategory AgeCategory { get; set; }
 
+        [Required]
         [StringLength(255)]
-        public string? ImagePath { get; set; }
+        public required string ImagePath { get; set; }
 
         public ICollection<Screening> Screenings { get; set; } = new List<Screening>();
     }

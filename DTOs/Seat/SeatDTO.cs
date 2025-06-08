@@ -4,10 +4,10 @@ namespace Cinema_Management_System.DTOs.Seat
 {
     public class SeatDTO
     {
-        public string Id { get; set; }
-        public string Row { get; set; }
+        public required string Id { get; set; }
+        public required string Row { get; set; }
         public int SeatInRow { get; set; }
         public SeatTypes SeatType { get; set; }
-        public bool isTaken { get; set; } // 0 - free, 1 - occupied
+        public bool isTaken { get; set; }
     }
 }

@@ -16,19 +16,19 @@ namespace Cinema_Management_System.Models.Cinema
         public int SeatId { get; set; }
 
         [Required]
-        public string UserId { get; set; }
+        public required string UserId { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(8,2)")]
         public decimal FinalPrice { get; set; }
 
         [ForeignKey("ScreeningId")]
-        public Screening Screening { get; set; }
+        public required Screening Screening { get; set; }
 
         [ForeignKey("SeatId")]
-        public Seat Seat { get; set; }
+        public required Seat Seat { get; set; }
 
         [ForeignKey("UserId")]
-        public ApplicationUser User { get; set; }
+        public required ApplicationUser User { get; set; }
     }
 }

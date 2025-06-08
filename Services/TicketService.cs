@@ -29,6 +29,12 @@ namespace Cinema_Management_System.Services
                 throw new Exception("Invalid seat");
             }
 
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
+            {
+                throw new Exception("Invalid user");
+            }
+
             decimal finalPrice = Math.Round(TicketPricingHelper.GetSeatTypeMultiplier(seat.SeatType) * screening.BasePrice, 2);
 
             var ticket = new Ticket
@@ -37,7 +43,11 @@ namespace Cinema_Management_System.Services
                 SeatId = seatId,
                 UserId = userId,
                 FinalPrice = finalPrice,
+                Screening = screening,
+                Seat = seat,
+                User = user
             };
+
 
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();

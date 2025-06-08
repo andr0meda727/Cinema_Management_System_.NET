@@ -4,6 +4,6 @@
     {
         public int ScreeningId { get; set; }
         public decimal BasePrice { get; set; }
-        public List<SeatDTO> Seats { get; set; }
+        public List<SeatDTO> Seats { get; set; } = new List<SeatDTO>();
     }
 }
