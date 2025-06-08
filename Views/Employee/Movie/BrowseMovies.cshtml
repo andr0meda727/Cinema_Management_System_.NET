@@ -1,0 +1,43 @@
+@model List<Cinema_Management_System.Models.Cinema.Movie>
+
+<h2 class="mb-4">Aktualna lista filmów</h2>
+
+@if (!Model.Any())
+{
+    <p>Brak filmów w bazie danych.</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Tytu³</th>
+                <th>Opis</th>
+                <th>D³ugoœæ (min)</th>
+                <th>Kategoria wiekowa</th>
+                <th>Obraz</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var movie in Model)
+            {
+                <tr>
+                    <td>@movie.Title</td>
+                    <td>@movie.Description</td>
+                    <td>@movie.MovieLength</td>
+                    <td>@movie.AgeCategory</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(movie.ImagePath))
+                        {
+                            <img src="@movie.ImagePath" alt="Poster" width="100" />
+                        }
+                        else
+                        {
+                            <span>Brak</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

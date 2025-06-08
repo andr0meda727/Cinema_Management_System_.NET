@@ -38,7 +38,7 @@ namespace Cinema_Management_System.Controllers
 
         public IActionResult BrowseMovies()
         {
-            return View();
+            return View("~/Views/Employee/Movie/BrowseMovies.cshtml");
         }
 
         public IActionResult AddScreeningRoom()
