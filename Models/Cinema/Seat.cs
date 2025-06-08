@@ -23,8 +23,9 @@ namespace Cinema_Management_System.Models.Cinema
         public string Row { get; set; }
 
         [Required]
-        [Range(1, 1000)]
-        public int SeatNumber { get; set; }
+        [Range(1, 100)]
+        [Display(Name = "Seat in Row")]
+        public int SeatInRow { get; set; }
 
         [Required]
         public SeatTypes SeatType { get; set; }

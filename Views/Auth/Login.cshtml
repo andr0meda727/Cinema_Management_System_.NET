@@ -6,11 +6,11 @@
 
 <h2>Logowanie</h2>
 <form asp-controller="Auth" asp-action="Login" method="post">
-    <div>
-        <label for="UserName">Login:</label>
+    <div class="mb-2">
+        <label for="UserName">Nazwa użytkownika:</label>
         <input type="text" name="UserName" class="form-control" required />
     </div>
-    <div>
+    <div class="mb-1">
         <label for="Password">Hasło:</label>
         <input type="password" name="Password" class="form-control" required />
     </div>

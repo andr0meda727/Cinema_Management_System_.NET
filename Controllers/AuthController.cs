@@ -14,11 +14,15 @@ namespace Cinema_Management_System.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly ICookieService _cookieService;
         private readonly UserManager<ApplicationUser> _userManager;
+
         public AuthController(IAuthService authService,
-                    UserManager<ApplicationUser> userManager)
+             ICookieService cookieService,
+             UserManager<ApplicationUser> userManager)
         {
             _authService = authService;
+            _cookieService = cookieService;
             _userManager = userManager;
         }
 
@@ -37,13 +41,7 @@ namespace Cinema_Management_System.Controllers
             if (token == null)
                 return Unauthorized("Invalid username or password.");
 
-            Response.Cookies.Append("jwt", token, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddDays(10)
-            });
+            _cookieService.SetTokenCookie(Response, token);
 
             return RedirectToAction("Index", "Home");
         }

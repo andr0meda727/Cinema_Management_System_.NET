@@ -9,16 +9,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema_Management_System.Controllers.Api
 {
+    //FOR POSTMAN TESTING
     [Route("api/auth")]
     [ApiController]
     public class AuthApiController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly ICookieService _cookieService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public AuthApiController(IAuthService authService, UserManager<ApplicationUser> userManager)
+        public AuthApiController(IAuthService authService,
+             ICookieService cookieService, 
+             UserManager<ApplicationUser> userManager)
         {
             _authService = authService;
+            _cookieService = cookieService;
             _userManager = userManager;
         }
 
@@ -30,15 +35,17 @@ namespace Cinema_Management_System.Controllers.Api
             if (token == null)
                 return Unauthorized("Invalid username or password.");
 
-            Response.Cookies.Append("jwt", token, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true, // tylko HTTPS
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddDays(10)
-            });
+            _cookieService.SetTokenCookie(Response, token);
 
             return Ok(new { message = "Login successful" });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout()
+        {
+            _cookieService.DeleteTokenCookie(Response);
+            return RedirectToAction("Login", "Auth");
         }
 
         [HttpPost("register")]

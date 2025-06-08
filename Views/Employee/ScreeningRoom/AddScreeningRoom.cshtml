@@ -1,0 +1,24 @@
+@using Cinema_Management_System.Models.Cinema
+@model Cinema_Management_System.DTOs.Employee.CreateScreeningRoomDTO
+
+<h2>Dodaj salê</h2>
+<form asp-action="Add" asp-controller="ScreeningRoom" method="post">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Format"></label>
+        <select asp-for="Format" class="form-control" asp-items="Html.GetEnumSelectList<ScreenFormats>()"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Rows"></label>
+        <input asp-for="Rows" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="SeatsPerRow"></label>
+        <input asp-for="SeatsPerRow" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Zapisz</button>
+</form>
