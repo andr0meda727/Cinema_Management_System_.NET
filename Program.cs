@@ -40,6 +40,8 @@ namespace Cinema_Management_System
             builder.Services.AddScoped<DeleteScreeningRoomService>();
             builder.Services.AddScoped<BrowseMoviesService>();
             builder.Services.AddScoped<EditMovieService>();
+            builder.Services.AddScoped<BrowseScreeningRoomService>();
+            builder.Services.AddScoped<EditScreeningRoomService>();
 
             //ASP.NET Identity options
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
