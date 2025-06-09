@@ -1,15 +1,17 @@
 ﻿@model Cinema_Management_System.Models.Cinema.Movie
 
 <h2>@Model.Title</h2>
-
-@if (!string.IsNullOrEmpty(Model.ImagePath))
-{
-    <img src="@Model.ImagePath" alt="Plakat filmu" class="img-fluid mb-3" style="max-height: 400px;" />
-}
-
-<p><strong>Długość:</strong> @Model.MovieLength minut</p>
-<p><strong>Kategoria wiekowa:</strong> @Model.AgeCategory</p>
-<p><strong>Opis:</strong></p>
-<div style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; max-width: 100%;">@Model.Description
+<div class="row">
+    @if (!string.IsNullOrEmpty(Model.ImagePath))
+    {
+        <img src="@Model.ImagePath" alt="Plakat filmu" class="img-fluid mb-3 col"/>
+    }
+    <div class="col">
+        <p><strong>Długość:</strong> @Model.MovieLength minut</p>
+        <p><strong>Kategoria wiekowa:</strong> @Model.AgeCategory</p>
+        <p><strong>Opis:</strong></p>
+        <div style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; max-width: 100%;">@Model.Description</div>
+    </div>
 </div>
+
 <a asp-action="BrowseMovies" asp-controller="BrowseMovies" class="btn btn-secondary mt-3">Powrót</a>
