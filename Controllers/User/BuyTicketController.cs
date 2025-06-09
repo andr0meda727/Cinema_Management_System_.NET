@@ -4,7 +4,7 @@ using Cinema_Management_System.Services.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cinema_Management_System.Controllers
+namespace Cinema_Management_System.Controllers.User
 {
     [Route("BuyTicket")]
     public class BuyTicketController : Controller

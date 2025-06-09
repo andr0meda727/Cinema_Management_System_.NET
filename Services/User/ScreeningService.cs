@@ -18,12 +18,12 @@ namespace Cinema_Management_System.Services.User
 
         public async Task<List<BasicScreeningDTO>> GetScreeningsAsyncDate(DateTime date)
         {
-            var startOfDay = date.Date;
+            var currentTime = DateTime.Now;
             var endOfDay = date.Date.AddDays(1).AddTicks(-1);
 
             var screenings = await _context.Screenings
                 .Include(s => s.Movie)
-                .Where(s => s.DateStartTime >= startOfDay && s.DateStartTime <= endOfDay)
+                .Where(s => s.DateStartTime >= currentTime && s.DateStartTime <= endOfDay)
                 .OrderBy(s => s.DateStartTime)
                 .ToListAsync();
 

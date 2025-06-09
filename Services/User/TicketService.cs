@@ -3,7 +3,9 @@ using Cinema_Management_System.DTOs.Seat;
 using Cinema_Management_System.DTOs.Tickets;
 using Cinema_Management_System.Mappers;
 using Cinema_Management_System.Models.Cinema;
+using Cinema_Management_System.Models.Users;
 using Cinema_Management_System.Services.Helpers;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -13,11 +15,14 @@ namespace Cinema_Management_System.Services.User
     {
         private readonly CinemaDbContext _context;
         private readonly SeatSelectionMapper _mapper;
+        private readonly TicketMapper _ticketMapper;
 
-        public TicketService(CinemaDbContext context, SeatSelectionMapper mapper)
+
+        public TicketService(CinemaDbContext context, SeatSelectionMapper mapper, TicketMapper ticketMapper)
         {
             _context = context;
             _mapper = mapper;
+            _ticketMapper = ticketMapper;
         }
 
         public class PurchaseResult
@@ -90,7 +95,7 @@ namespace Cinema_Management_System.Services.User
                         SeatId = seat.Id,
                         UserId = dto.UserId,
                         FinalPrice = screening.BasePrice * TicketPricingHelper.GetSeatTypeMultiplier(seat.SeatType),
-                        PurchaseDate = DateTime.UtcNow
+                        PurchaseDate = DateTime.Now
                     };
 
                     tickets.Add(ticket);
@@ -137,14 +142,42 @@ namespace Cinema_Management_System.Services.User
             return dto;
         }
 
-        //    public async Task<List<BasicTicketDto>> GetUserTickets(int userId)
-        //    {
-        //        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-        //        if (user == null)
-        //        {
-        //            throw new Exception("Invalid user");
-        //        }
+        public async Task<List<BasicTicketDTO>> GetUserBasicTicketsAsync(string userId)
+        {
+            var user = _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
 
-        //    }
+            var tickets = await _context.Tickets
+                .Where(t => t.UserId == userId)
+                .Include(t => t.Screening)
+                    .ThenInclude(s => s.Movie)
+                .Include(t => t.Seat)
+                .OrderBy(t => t.Screening.DateStartTime)
+                .ToListAsync();
+
+            return tickets.Select(t => _ticketMapper.TicketToTicketBasicDTO(t)).ToList();
+        }
+        
+        public async Task<DetailedTicketDTO> GetUserDetailedTicketAsync(string userId, int ticketId)
+        {
+            var user = _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+
+            var ticket = await _context.Tickets
+                .Include(t => t.Screening)
+                    .ThenInclude(s => s.Movie)
+                .Include(t => t.Screening)
+                    .ThenInclude(s => s.ScreeningRoom)
+                .Include(t => t.Seat)
+                .FirstOrDefaultAsync(t => t.Id == ticketId && t.UserId == userId);
+
+            return ticket == null ? null : _ticketMapper.TicketToTicketDetailedDTO(ticket);
+        }
     }
 }

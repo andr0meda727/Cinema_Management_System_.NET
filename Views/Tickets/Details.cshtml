@@ -1,0 +1,41 @@
+﻿@model Cinema_Management_System.DTOs.Tickets.DetailedTicketDTO
+
+@{
+    ViewData["Title"] = "Szczegóły biletu";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="~/uploads/@Model.MoviePosterUrl" class="img-fluid h-100 rounded-start object-fit-cover" alt="@Model.MovieTitle poster" style="object-fit: cover;" />
+            </div>
+
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h3 class="card-title mb-3">@Model.MovieTitle</h3>
+
+                    <p class="card-text mb-1"><strong>Nr biletu:</strong> @Model.Id</p>
+                    <p class="card-text mb-1"><strong>Data seansu:</strong> @Model.DateStartTime.ToString("dd MMMM yyyy")</p>
+                    <p class="card-text mb-1"><strong>Godzina:</strong> @Model.DateStartTime.ToString("HH:mm") - @Model.DateEndTime.ToString("HH:mm")</p>
+                    <p class="card-text mb-1"><strong>Sala:</strong> @Model.ScreeningRoomName</p>
+                    <p class="card-text mb-1"><strong>Miejsce:</strong> Rząd @Model.SeatRow, nr @Model.SeatNumber</p>
+                    <p class="card-text mb-1"><strong>Kategoria wiekowa:</strong> @Html.DisplayFor(model => model.AgeCategory)</p>
+                    <p class="card-text mb-1"><strong>Cena:</strong> @Model.FinalPrice.ToString("0.00") zł</p>
+                    <p class="card-text mb-3"><strong>Zakupiono:</strong> @Model.PurchaseDate.ToString("dd MMMM yyyy HH:mm")</p>
+
+                    <hr />
+
+                    <div class="d-flex justify-content-end">
+                        <form asp-action="DownloadPdf" asp-controller="Tickets" method="post">
+                            <input type="hidden" name="ticketId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-outline-danger position-absolute m-3" style="right: 0; bottom: 0">
+                                Pobierz PDF
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

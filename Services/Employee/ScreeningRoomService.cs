@@ -15,8 +15,6 @@ namespace Cinema_Management_System.Services.Employee
 
         public async Task<bool> AddAsync(CreateScreeningRoomDTO dto)
         {
-   
-                // Oblicz liczbę miejsc
                 int totalSeats = dto.Rows * dto.SeatsPerRow;
 
                 var room = new ScreeningRoom
@@ -29,9 +27,8 @@ namespace Cinema_Management_System.Services.Employee
                 };
 
                 _db.ScreeningRooms.Add(room);
-                await _db.SaveChangesAsync(); // Potrzebne do uzyskania room.Id
+                await _db.SaveChangesAsync();
 
-                // Tworzenie miejsc
                 var seats = new List<Seat>();
                 for (int rowIndex = 0; rowIndex < dto.Rows; rowIndex++)
                 {

@@ -30,6 +30,7 @@ namespace Cinema_Management_System
 
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ScreeningMapper>();
+            builder.Services.AddScoped<TicketMapper>();
             builder.Services.AddScoped<ScreeningService>();
             builder.Services.AddScoped<ICookieService, CookieService>();
             builder.Services.AddScoped<SeatSelectionMapper>();

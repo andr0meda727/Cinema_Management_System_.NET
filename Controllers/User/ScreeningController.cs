@@ -2,7 +2,7 @@
 using Cinema_Management_System.Services.User;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cinema_Management_System.Controllers
+namespace Cinema_Management_System.Controllers.User
 {
     [Route("Screening")]
     public class ScreeningController : Controller
