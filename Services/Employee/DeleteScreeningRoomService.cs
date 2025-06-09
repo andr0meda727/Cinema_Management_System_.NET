@@ -24,14 +24,31 @@ namespace Cinema_Management_System.Services.Employee
                   .ToListAsync();
         }
 
-        public async Task DeleteAsync(List<int> screeningRoomIds)
+        public async Task<(List<int> DeletedIds, List<int> BlockedIds)> DeleteAsync(List<int> screeningRoomIds)
         {
-            var screeningRoomsToRemove = await _db.ScreeningRooms
-               .Where(m => screeningRoomIds.Contains(m.Id))
-               .ToListAsync();
+            var roomsToDelete = await _db.ScreeningRooms
+                .Include(r => r.Screenings)
+                .Where(r => screeningRoomIds.Contains(r.Id))
+                .ToListAsync();
 
-            _db.ScreeningRooms.RemoveRange(screeningRoomsToRemove);
-            await _db.SaveChangesAsync();
+            var now = DateTime.Now;
+
+            var blocked = roomsToDelete
+                .Where(r => r.Screenings.Any(s => s.DateStartTime > now))
+                .Select(r => r.Id)
+                .ToList();
+
+            var deletable = roomsToDelete
+                .Where(r => !blocked.Contains(r.Id))
+                .ToList();
+
+            if (deletable.Any())
+            {
+                _db.ScreeningRooms.RemoveRange(deletable);
+                await _db.SaveChangesAsync();
+            }
+
+            return (deletable.Select(r => r.Id).ToList(), blocked);
         }
     }
 }
