@@ -62,18 +62,23 @@ namespace Cinema_Management_System.Services.User
 
                 var seats = await _context.Seats
                     .Include(s => s.ScreeningRoom)
-                    .Where(s => dto.SeatIds.Contains(s.Id) &&
-                               s.ScreeningRoomId == screening.ScreeningRoomId)
+                    .Where(s => dto.SeatIds.Contains(s.Id) && s.ScreeningRoomId == screening.ScreeningRoomId)
                     .ToListAsync();
+
+                var takenSeatIds = await _context.Tickets
+                    .Where(t => t.ScreeningId == dto.ScreeningId && dto.SeatIds.Contains(t.SeatId))
+                    .Select(t => t.SeatId)
+                    .ToListAsync();
+
+                if (takenSeatIds.Any())
+                {
+                    return PurchaseResult.Failure("Some seats are already taken, choose again");
+                }
+
 
                 if (seats.Count != dto.SeatIds.Count)
                 {
                     return PurchaseResult.Failure("Some seats not found");
-                }
-
-                if (seats.Any(s => s.SeatStatus))
-                {
-                    return PurchaseResult.Failure("Some seats are already taken, choose again");
                 }
 
                 var tickets = new List<Ticket>();
@@ -82,18 +87,13 @@ namespace Cinema_Management_System.Services.User
                     var ticket = new Ticket
                     {
                         ScreeningId = dto.ScreeningId,
-                        Screening = screening,
                         SeatId = seat.Id,
-                        Seat = seat,
                         UserId = dto.UserId,
-                        User = user,
                         FinalPrice = screening.BasePrice * TicketPricingHelper.GetSeatTypeMultiplier(seat.SeatType),
                         PurchaseDate = DateTime.UtcNow
                     };
 
                     tickets.Add(ticket);
-                    seat.SeatStatus = true;
-                    seat.Ticket = ticket;
                 }
 
                 await _context.Tickets.AddRangeAsync(tickets);

@@ -45,9 +45,7 @@ namespace Cinema_Management_System.Services.Employee
                                 ScreeningRoomId = room.Id,
                                 Row = rowLetter.ToString(),
                                 SeatInRow = seatNum,
-                                SeatType = SeatTypes.DOUBLE,
-                                SeatStatus = false,
-                                ScreeningRoom = room
+                                SeatType = SeatTypes.DOUBLE
                             });
                         } else if (rowIndex == dto.SeatsPerRow - 2)
                         {
@@ -56,9 +54,7 @@ namespace Cinema_Management_System.Services.Employee
                                 ScreeningRoomId = room.Id,
                                 Row = rowLetter.ToString(),
                                 SeatInRow = seatNum,
-                                SeatType = SeatTypes.VIP,
-                                SeatStatus = false,
-                                ScreeningRoom = room
+                                SeatType = SeatTypes.VIP
                             });
                         } else
                         {
@@ -67,9 +63,7 @@ namespace Cinema_Management_System.Services.Employee
                                 ScreeningRoomId = room.Id,
                                 Row = rowLetter.ToString(),
                                 SeatInRow = seatNum,
-                                SeatType = SeatTypes.STANDARD,
-                                SeatStatus = false,
-                                ScreeningRoom = room
+                                SeatType = SeatTypes.STANDARD
                             });
                         }
                     }

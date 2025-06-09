@@ -137,11 +137,9 @@ namespace Cinema_Management_System.Data
                             seats.Add(new Seat
                             {
                                 ScreeningRoomId = room.Id,
-                                ScreeningRoom = room,
                                 Row = ((char)('A' + row)).ToString(),
                                 SeatInRow = seatNum,
-                                SeatType = seatType,
-                                SeatStatus = false
+                                SeatType = seatType
                             });
                         }
                     }
@@ -168,9 +166,7 @@ namespace Cinema_Management_System.Data
                         screenings.Add(new Screening
                         {
                             MovieId = movie.Id,
-                            Movie = movie,
                             ScreeningRoomId = room.Id,
-                            ScreeningRoom = room,
                             DateStartTime = startTime,
                             DateEndTime = endTime,
                             BasePrice = room.Format switch
@@ -198,23 +194,13 @@ namespace Cinema_Management_System.Data
                     var tickets = seats.Select(seat => new Ticket
                     {
                         ScreeningId = screening.Id,
-                        Screening = screening,
                         SeatId = seat.Id,
-                        Seat = seat,
                         UserId = user.Id,
-                        User = user,
                         FinalPrice = screening.BasePrice * TicketPricingHelper.GetSeatTypeMultiplier(seat.SeatType),
                         PurchaseDate = DateTime.UtcNow
                     }).ToList();
 
                     await context.Tickets.AddRangeAsync(tickets);
-                    await context.SaveChangesAsync();
-
-                    // Mark seats as occupied
-                    foreach (var seat in seats)
-                    {
-                        seat.SeatStatus = true;
-                    }
                     await context.SaveChangesAsync();
                 }
             }
