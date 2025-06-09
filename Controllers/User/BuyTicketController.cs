@@ -31,7 +31,7 @@ namespace Cinema_Management_System.Controllers.User
             return View(dto);
         }
 
-        [HttpPost("Buy")]
+        [HttpPost("Buy")] //vlidateantiforgerytoken
         public async Task<IActionResult> Buy([FromBody] BuyTicketDTO dto)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -49,6 +49,7 @@ namespace Cinema_Management_System.Controllers.User
                 return Ok(new
                 {
                     success = true,
+                    ticketIds = result.TicketIds,
                     orderId = result.OrderId
                 });
             }
@@ -58,6 +59,28 @@ namespace Cinema_Management_System.Controllers.User
                 success = false,
                 message = result.Message ?? "Wystąpił błąd podczas przetwarzania zamówienia."
             });
+        }
+
+        [HttpGet("Summary")]
+        public async Task<IActionResult> Summary([FromQuery] string ticketIds)
+        {
+            if (string.IsNullOrEmpty(ticketIds))
+            {
+                return BadRequest("No ticket IDs provided");
+            }
+
+            var ids = ticketIds.Split(',').Select(int.Parse).ToList();
+            var tickets = await _ticketService.GetTicketSummariesAsync(ids);
+
+            if (!tickets.Any())
+            {
+                return NotFound("No tickets found");
+            }
+
+            ViewBag.TotalPrice = tickets.Sum(t => t.FinalPrice);
+            ViewBag.OrderId = tickets.First().Id;
+
+            return View(tickets);
         }
     }
 }

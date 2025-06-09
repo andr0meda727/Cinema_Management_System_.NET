@@ -98,7 +98,7 @@
             cursor: not-allowed;
         }
 
-        .seat.selected, .x {
+        .seat.selected {
             background-color: #ffc107;
             color: #000;
             border: 2px solid #000;
@@ -207,12 +207,11 @@
             })
             .then(async res => {
                 const data = await res.json();
-                if (!res.ok) throw new Error(data.message || "Błąd podczas zakupu biletów."); location.reload();
+                if (!res.ok) throw new Error(data.message || "Błąd podczas zakupu biletów.");
                 return data;
             })
             .then(data => {
-                alert(`Pomyślnie zakupiono bilety!\nID zamówienia: ${data.orderId}`);
-                selectedSeats.clear();
+                window.location.href = `/BuyTicket/Summary?ticketIds=${data.ticketIds.join(',')}`;
             })
             .catch(err => {
                 console.error(err);

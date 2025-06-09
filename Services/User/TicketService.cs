@@ -29,17 +29,23 @@ namespace Cinema_Management_System.Services.User
         {
             public bool Success { get; }
             public string Message { get; }
-            public int? OrderId { get; }
+            public List<int> TicketIds { get; }
+            public Guid? OrderId { get; }
 
-            private PurchaseResult(bool success, string message, int? orderId)
+            private PurchaseResult(bool success, string message, List<int> ticketIds, int? orderId = null)
             {
                 Success = success;
                 Message = message;
-                OrderId = orderId;
+                TicketIds = ticketIds;
+                OrderId = Guid.NewGuid();
             }
 
-            public static PurchaseResult SuccessResult(int orderId) => new(true, string.Empty, orderId);
-            public static PurchaseResult Failure(string message) => new(false, message, null);
+
+            public static PurchaseResult SuccessResult(List<int> ticketIds, int? orderId = null)
+                => new(true, string.Empty, ticketIds, orderId);
+
+            public static PurchaseResult Failure(string message)
+                => new(false, message, null);
         }
 
         public async Task<PurchaseResult> PurchaseTicketsAsync(BuyTicketDTO dto)
@@ -77,13 +83,14 @@ namespace Cinema_Management_System.Services.User
 
                 if (takenSeatIds.Any())
                 {
-                    return PurchaseResult.Failure("Some seats are already taken, choose again");
+                    return PurchaseResult.Failure($"Seats {string.Join(", ", takenSeatIds)} are already taken");
                 }
 
 
                 if (seats.Count != dto.SeatIds.Count)
                 {
-                    return PurchaseResult.Failure("Some seats not found");
+                    var missingSeats = dto.SeatIds.Except(seats.Select(s => s.Id)).ToList();
+                    return PurchaseResult.Failure($"Seats {string.Join(", ", missingSeats)} not found");
                 }
 
                 var tickets = new List<Ticket>();
@@ -105,11 +112,12 @@ namespace Cinema_Management_System.Services.User
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
 
-                return PurchaseResult.SuccessResult(tickets.First().Id);
+                return PurchaseResult.SuccessResult(tickets.Select(t => t.Id).ToList());
             }
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
+                // logger
                 return PurchaseResult.Failure("Error processing your purchase");
             }
         }
@@ -178,6 +186,19 @@ namespace Cinema_Management_System.Services.User
                 .FirstOrDefaultAsync(t => t.Id == ticketId && t.UserId == userId);
 
             return ticket == null ? null : _ticketMapper.TicketToTicketDetailedDTO(ticket);
+        }
+
+        public async Task<List<DetailedTicketDTO>> GetTicketSummariesAsync(List<int> ticketIds)
+        {
+            return await _context.Tickets
+                .Include(t => t.Screening)
+                    .ThenInclude(s => s.Movie)
+                .Include(t => t.Seat)
+                .Include(t => t.Screening)
+                    .ThenInclude(s => s.ScreeningRoom)
+                .Where(t => ticketIds.Contains(t.Id))
+                .Select(t => _ticketMapper.TicketToTicketDetailedDTO(t))
+                .ToListAsync();
         }
     }
 }
