@@ -10,5 +10,6 @@ namespace Cinema_Management_System.DTOs.Tickets
         public AgeCategory AgeCategory { get; set; }
         public required string MoviePosterUrl { get; set; }
         public DateTime DateEndTime { get; set; }
+        public required DateTime PurchaseDate { get; set; }
     }
 }

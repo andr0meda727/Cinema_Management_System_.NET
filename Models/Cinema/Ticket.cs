@@ -19,6 +19,9 @@ namespace Cinema_Management_System.Models.Cinema
         public required string UserId { get; set; }
 
         [Required]
+        public required DateTime PurchaseDate { get; set; }
+
+        [Required]
         [Column(TypeName = "decimal(8,2)")]
         public decimal FinalPrice { get; set; }
 
