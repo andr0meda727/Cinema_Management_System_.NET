@@ -71,21 +71,21 @@ namespace Cinema_Management_System.Data
                         Description = "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
                         MovieLength = 166,
                         AgeCategory = AgeCategory.TwelvePlus,
-                        ImagePath = "dune2.jpg"
+                        ImagePath = "/uploads/dune2.jpg"
                     },
                     new() {
                         Title = "The Batman",
                         Description = "When a sadistic serial killer begins murdering key political figures in Gotham, Batman is forced to investigate.",
                         MovieLength = 176,
                         AgeCategory = AgeCategory.SixteenPlus,
-                        ImagePath = "batman.jpg"
+                        ImagePath = "/uploads/batman.jpg"
                     },
                     new() {
                         Title = "Elemental",
                         Description = "In a city where fire, water, land and air residents live together, a fiery young woman and a go-with-the-flow guy discover something elemental: how much they actually have in common.",
                         MovieLength = 102,
                         AgeCategory = AgeCategory.General,
-                        ImagePath = "elemental.jpg"
+                        ImagePath = "/uploads/elemental.jpg"
                     }
                 };
                 await context.Movies.AddRangeAsync(movies);

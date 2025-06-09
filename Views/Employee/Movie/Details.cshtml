@@ -8,7 +8,7 @@
     }
     <div class="col">
         <p><strong>Długość:</strong> @Model.MovieLength minut</p>
-        <p><strong>Kategoria wiekowa:</strong> @Model.AgeCategory</p>
+        <p><strong>Kategoria wiekowa:</strong> @Html.DisplayFor(model => model.AgeCategory)</p>
         <p><strong>Opis:</strong></p>
         <div style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; max-width: 100%;">@Model.Description</div>
     </div>

@@ -25,6 +25,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Ticket\" />
-    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 </Project>
