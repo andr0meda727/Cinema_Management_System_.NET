@@ -12,10 +12,7 @@ else
         <thead class="table-dark">
             <tr>
                 <th>Tytu³</th>
-                <th>Opis</th>
-                <th>D³ugoœæ (min)</th>
-                <th>Kategoria wiekowa</th>
-                <th>Obraz</th>
+                <th>Szczegó³y</th>
             </tr>
         </thead>
         <tbody>
@@ -23,18 +20,10 @@ else
             {
                 <tr>
                     <td>@movie.Title</td>
-                    <td>@movie.Description</td>
-                    <td>@movie.MovieLength</td>
-                    <td>@movie.AgeCategory</td>
                     <td>
-                        @if (!string.IsNullOrEmpty(movie.ImagePath))
-                        {
-                            <img src="@movie.ImagePath" alt="Poster" width="100" />
-                        }
-                        else
-                        {
-                            <span>Brak</span>
-                        }
+                        <a asp-controller="Details" asp-action="Details" asp-route-id="@movie.Id" class="btn btn-primary btn-sm">
+                            Szczegó³y
+                        </a>
                     </td>
                 </tr>
             }
