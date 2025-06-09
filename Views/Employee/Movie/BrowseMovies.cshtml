@@ -1,0 +1,32 @@
+@model List<Cinema_Management_System.Models.Cinema.Movie>
+
+<h2 class="mb-4">Aktualna lista filmów</h2>
+
+@if (!Model.Any())
+{
+    <p>Brak filmów w bazie danych.</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Tytu³</th>
+                <th>Szczegó³y</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var movie in Model)
+            {
+                <tr>
+                    <td>@movie.Title</td>
+                    <td>
+                        <a asp-controller="Details" asp-action="Details" asp-route-id="@movie.Id" class="btn btn-primary btn-sm">
+                            Szczegó³y
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
