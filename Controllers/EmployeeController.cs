@@ -9,11 +9,13 @@ namespace Cinema_Management_System.Controllers
     {
         private readonly DeleteMovieService _deleteMovieService;
         private readonly DeleteScreeningRoomService _deleteScreeningRoomService;
+        private readonly EditMovieService _editMovieService;
 
-        public EmployeeController(DeleteMovieService deleteMovieService, DeleteScreeningRoomService deleteScreeningRoomService)
+        public EmployeeController(DeleteMovieService deleteMovieService, DeleteScreeningRoomService deleteScreeningRoomService, EditMovieService editMovieService)
         {
             _deleteMovieService = deleteMovieService;
             _deleteScreeningRoomService = deleteScreeningRoomService;
+            _editMovieService = editMovieService;
         }
         public IActionResult Index()
         {
@@ -25,9 +27,9 @@ namespace Cinema_Management_System.Controllers
             return View("~/Views/Employee/Movie/AddMovie.cshtml");
         }
 
-        public IActionResult EditMovies()
+        public IActionResult EditMovie()
         {
-            return View();
+            return View("~/Views/Employee/Movie/EditMovie.cshtml");
         }
 
         public async Task<IActionResult> DeleteMovie()
