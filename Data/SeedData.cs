@@ -203,7 +203,8 @@ namespace Cinema_Management_System.Data
                         Seat = seat,
                         UserId = user.Id,
                         User = user,
-                        FinalPrice = screening.BasePrice * TicketPricingHelper.GetSeatTypeMultiplier(seat.SeatType)
+                        FinalPrice = screening.BasePrice * TicketPricingHelper.GetSeatTypeMultiplier(seat.SeatType),
+                        PurchaseDate = DateTime.UtcNow
                     }).ToList();
 
                     await context.Tickets.AddRangeAsync(tickets);

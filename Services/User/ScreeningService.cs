@@ -3,7 +3,7 @@ using Cinema_Management_System.DTOs.Screening;
 using Cinema_Management_System.Mappers;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cinema_Management_System.Services
+namespace Cinema_Management_System.Services.User
 {
     public class ScreeningService
     {

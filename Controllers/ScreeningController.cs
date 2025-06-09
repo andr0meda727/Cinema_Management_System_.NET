@@ -1,5 +1,5 @@
 ﻿using Cinema_Management_System.Models;
-using Cinema_Management_System.Services;
+using Cinema_Management_System.Services.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema_Management_System.Controllers

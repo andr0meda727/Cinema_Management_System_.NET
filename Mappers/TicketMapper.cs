@@ -14,6 +14,7 @@ public partial class TicketMapper
     [MapperIgnoreSource(nameof(Ticket.Seat))]
     [MapperIgnoreSource(nameof(Ticket.UserId))]
     [MapperIgnoreSource(nameof(Ticket.User))]
+    [MapperIgnoreSource(nameof(Ticket.PurchaseDate))]
     public partial BasicTicketDTO TicketToTicketBasicDTO(Ticket ticket);
 
     [MapProperty("Screening.Movie.Title", nameof(DetailedTicketDTO.MovieTitle))]
