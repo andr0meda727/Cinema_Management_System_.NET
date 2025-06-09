@@ -22,7 +22,7 @@ namespace Cinema_Management_System.Models.Cinema
 
         [Required]
         [StringLength(50)]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         [Required]
         [Display(Name = "Screen Format")]

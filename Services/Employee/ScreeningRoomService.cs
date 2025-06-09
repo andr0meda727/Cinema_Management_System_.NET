@@ -38,14 +38,40 @@ namespace Cinema_Management_System.Services.Employee
                     char rowLetter = (char)('A' + rowIndex); // A, B, C, ...
                     for (int seatNum = 1; seatNum <= dto.SeatsPerRow; seatNum++)
                     {
-                        seats.Add(new Seat
+                        if (rowIndex == dto.Rows - 1)
                         {
-                            ScreeningRoomId = room.Id,
-                            Row = rowLetter.ToString(),
-                            SeatInRow = seatNum,
-                            SeatType = SeatTypes.STANDARD,
-                            SeatStatus = false
-                        });
+                            seats.Add(new Seat
+                            {
+                                ScreeningRoomId = room.Id,
+                                Row = rowLetter.ToString(),
+                                SeatInRow = seatNum,
+                                SeatType = SeatTypes.DOUBLE,
+                                SeatStatus = false,
+                                ScreeningRoom = room
+                            });
+                        } else if (rowIndex == dto.SeatsPerRow - 2)
+                        {
+                            seats.Add(new Seat
+                            {
+                                ScreeningRoomId = room.Id,
+                                Row = rowLetter.ToString(),
+                                SeatInRow = seatNum,
+                                SeatType = SeatTypes.VIP,
+                                SeatStatus = false,
+                                ScreeningRoom = room
+                            });
+                        } else
+                        {
+                            seats.Add(new Seat
+                            {
+                                ScreeningRoomId = room.Id,
+                                Row = rowLetter.ToString(),
+                                SeatInRow = seatNum,
+                                SeatType = SeatTypes.STANDARD,
+                                SeatStatus = false,
+                                ScreeningRoom = room
+                            });
+                        }
                     }
                 }
 
@@ -53,9 +79,6 @@ namespace Cinema_Management_System.Services.Employee
                 await _db.SaveChangesAsync();
 
                 return true;
-            
-           
         }
-
     }
 }

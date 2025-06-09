@@ -20,7 +20,7 @@ namespace Cinema_Management_System.Models.Cinema
 
         [Required]
         [StringLength(2)]
-        public string Row { get; set; }
+        public required string Row { get; set; }
 
         [Required]
         [Range(1, 100)]
@@ -34,9 +34,9 @@ namespace Cinema_Management_System.Models.Cinema
         public bool SeatStatus { get; set; } // 0 - free, 1 - occupied
 
         [ForeignKey("ScreeningRoomId")]
-        public ScreeningRoom ScreeningRoom { get; set; }
+        public required ScreeningRoom ScreeningRoom { get; set; }
 
-        public Ticket Ticket { get; set; }
+        public Ticket? Ticket { get; set; }
     }
 
 }

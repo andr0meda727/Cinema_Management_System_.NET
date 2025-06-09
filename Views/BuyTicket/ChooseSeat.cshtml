@@ -1,0 +1,195 @@
+﻿@model Cinema_Management_System.DTOs.Seat.SeatSelectionDTO
+@using Cinema_Management_System.Services.Helpers
+
+@{
+    var basePrice = Model?.Screening?.BasePrice ?? 20m;
+}
+
+<div class="container">
+    <h2>Wybierz miejsce: </h2>
+    <div class="seat-legend mb-3">
+        <span class="seat standard"></span> Standard
+        <span class="seat vip"></span> VIP
+        <span class="seat double"></span> Double
+        <span class="seat taken"></span> Zajęte
+        <span class="seat selected"></span> Wybrane
+    </div>
+
+    <div>
+        <div class="screen"></div>
+        <div>
+            @if (Model?.Seats != null)
+            {
+                @foreach (var row in Model.Seats.GroupBy(s => s.Row).OrderBy(r => r.Key))
+                {
+                    <div class="seat-row mb-2">
+                        <span class="row-num fw-bold">Rząd @row.Key:</span>
+                        @foreach (var seat in row.OrderBy(s => s.SeatInRow))
+                        {
+                            var seatClass = seat.SeatType.ToString().ToLower();
+                            if (seat.isTaken)
+                            {
+                                seatClass = "taken";
+                            }
+                            <button type="button" class="seat @seatClass me-1"
+                                    data-seat-id="@seat.Id"
+                                    data-price="@seat.Price"
+                                    @(seat.isTaken ? "disabled" : "")>
+                                @seat.SeatInRow
+                            </button>
+                        }
+                    </div>
+                }
+            } else
+            {
+                <p>Brak danych o miejscach.</p>
+            }
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h4 id="price-info">Wybierz miejsca aby zobaczyć cenę</h4>
+        <div id="selected-seats-list" class="mb-3"></div>
+        <h5 id="total-price">Razem: 0 zł</h5>
+        <form method="post" asp-controller="BuyTicket" asp-action="Buy">
+            <input type="hidden" id="seatIdsJson" name="seatIds" />
+            <input type="hidden" name="screeningId" value="@Model?.Screening?.Id" />
+            <button type="submit" class="btn btn-primary mt-2" id="buyButton" disabled>Kup bilety</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .screen {
+        height: 20px;
+        width: 100%;
+        background-color: #555;
+        margin: 2em 0 4em;
+        border-radius: 10px;
+        box-shadow: 0px 16px 30px -1px black;
+    }
+
+    .seat {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        width: 40px;
+        height: 40px;
+        border: none;
+        color: white;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .seat.standard {
+            background-color: #007bff;
+        }
+
+        .seat.vip {
+            background-color: #dc3545;
+        }
+
+        .seat.double {
+            background-color: #28a745;
+        }
+
+        .seat.taken {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .seat.selected, .x {
+            background-color: #ffc107;
+            color: #000;
+            border: 2px solid #000;
+        }
+
+    .seat-legend span.seat {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin: 0 8px 0 16px;
+        vertical-align: middle;
+    }
+
+    .seat-row {
+        padding: 5px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: center;
+    }
+
+    .row-num {
+        font-size: 1.2rem;
+        position: absolute;
+        left: 15%;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        const selectedSeats = new Map();
+
+        document.querySelectorAll(".seat:not(.taken)").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const seatId = this.dataset.seatId;
+                const price = parseFloat(this.dataset.price);
+                const seatNumber = this.innerText;
+                const row = this.closest('.seat-row').querySelector('span').innerText.replace('Rząd ', '').replace(':', '');
+                const seatType = Array.from(this.classList).find(cls =>
+                    cls === 'standard' || cls === 'vip' || cls === 'double');
+
+                if (selectedSeats.has(seatId)) {
+                    selectedSeats.delete(seatId);
+                    this.classList.remove("selected");
+                } else {
+                    selectedSeats.set(seatId, {
+                        seatId,
+                        price,
+                        seatNumber,
+                        row,
+                        seatType
+                    });
+                    this.classList.add("selected");
+                }
+
+                updateSelectionDisplay();
+            });
+        });
+
+        function updateSelectionDisplay() {
+            const seatsList = document.getElementById("selected-seats-list");
+            const totalPriceElement = document.getElementById("total-price");
+            const buyButton = document.getElementById("buyButton");
+            const seatIdsInput = document.getElementById("seatIdsJson");
+
+            seatsList.innerHTML = '';
+            let total = 0;
+
+            if (selectedSeats.size === 0) {
+                seatsList.innerHTML = '<p>Nie wybrano miejsc</p>';
+                totalPriceElement.textContent = 'Razem: 0 zł';
+                buyButton.disabled = true;
+                seatIdsInput.value = '';
+                return;
+            }
+
+            selectedSeats.forEach((seat, seatId) => {
+                const seatItem = document.createElement("div");
+                seatItem.className = "selected-seat-item";
+                seatItem.innerHTML = `
+                    <span>Rząd ${seat.row}, Miejsce ${seat.seatNumber} (${seat.seatType})</span>
+                    <span>${seat.price.toFixed(2)} zł</span>
+                `;
+                seatsList.appendChild(seatItem);
+                total += seat.price;
+            });
+
+            totalPriceElement.textContent = `Razem: ${total.toFixed(2)} zł`;
+            buyButton.disabled = false;
+            seatIdsInput.value = JSON.stringify([...selectedSeats.keys()]);
+        }
+    </script>
+}

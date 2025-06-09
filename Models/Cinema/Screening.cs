@@ -24,10 +24,10 @@ public class Screening
     public decimal BasePrice { get; set; }
 
     [ForeignKey("MovieId")]
-    public Movie Movie { get; set; }
+    public required Movie Movie { get; set; }
 
     [ForeignKey("ScreeningRoomId")]
-    public ScreeningRoom ScreeningRoom { get; set; }
+    public required ScreeningRoom ScreeningRoom { get; set; }
 
     public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }

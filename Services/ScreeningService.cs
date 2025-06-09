@@ -30,7 +30,7 @@ namespace Cinema_Management_System.Services
             return screenings.Select(_mapper.ScreeningToBasicScreeningDTOWithShortDesc).ToList();
         }
 
-        public async Task<DetailedScreeningDTO> GetDetailedScreeningByIdAsync(int screeningId)
+        public async Task<DetailedScreeningDTO?> GetDetailedScreeningByIdAsync(int screeningId)
         {
             var screening = await _context.Screenings
                 .Include(s => s.Movie)
@@ -38,6 +38,8 @@ namespace Cinema_Management_System.Services
                 .Where(s => s.Id == screeningId)
                 .Select(s => _mapper.ScreeningToScreeningDetailedDTO(s))
                 .FirstOrDefaultAsync();
+
+            if (screening == null) return null;
 
             return screening;
         }
