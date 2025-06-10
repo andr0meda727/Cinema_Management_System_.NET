@@ -1,0 +1,27 @@
+@model List<Cinema_Management_System.Models.Cinema.ScreeningRoom>
+
+<h2>Sale kinowe</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nazwa</th>
+            <th>Format</th>
+            <th>Miejsca</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var room in Model)
+        {
+            <tr>
+                <td>@room.Name</td>
+                <td>@room.Format</td>
+                <td>@room.NumberOfSeats</td>
+                <td>
+                    <a asp-controller="BrowseScreeningRoom" asp-action="Details" asp-route-id="@room.Id" class="btn btn-primary">Zobacz szczegó³y</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,43 @@
+@model List<Cinema_Management_System.DTOs.Employee.EditScreeningRoomDTO>
+
+<h2 class="mb-4">Edytuj sale kinowe</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@foreach (var room in Model)
+{
+    <form asp-controller="EditScreeningRoom" asp-action="EditScreeningRoom" method="post" class="border rounded p-4 mb-4">
+        <input type="hidden" name="Id" value="@room.Id" />
+        <div class="mb-3">
+            <label class="form-label">Nazwa sali</label>
+            <input type="text" name="Name" class="form-control" value="@room.Name" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Format</label>
+            <select name="Format" class="form-select" required>
+                @foreach (var format in Enum.GetValues(typeof(Cinema_Management_System.Models.Cinema.ScreenFormats)))
+                {
+                    <option value="@format" selected="@(room.Format == (Cinema_Management_System.Models.Cinema.ScreenFormats)format)">
+                        @format
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Rzêdy</label>
+            <input type="number" name="Rows" class="form-control" value="@room.Rows" min="3" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Miejsca w rzêdzie</label>
+            <input type="number" name="SeatsPerRow" class="form-control" value="@room.SeatsPerRow" min="5" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+    </form>
+}

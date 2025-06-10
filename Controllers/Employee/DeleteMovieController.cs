@@ -25,15 +25,25 @@ namespace Cinema_Management_System.Controllers.Employee
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteMovie(List<int> selectedMovieIds)
         {
-            if (selectedMovieIds.Count == 0)
+            if (selectedMovieIds == null || !selectedMovieIds.Any())
             {
-                TempData["ErrorMessage"] = "Nie wybrano żadnego filmu do usunięcia.";
-                return RedirectToAction(nameof(DeleteMovie));
+                TempData["ErrorMessage"] = "Nie wybrano żadnych filmów do usunięcia.";
+                return RedirectToAction("DeleteMovie");
             }
 
-            await _service.DeleteAsync(selectedMovieIds);
-            TempData["SuccessMessage"] = "Wybrane filmy zostały usunięte.";
-            return RedirectToAction(nameof(DeleteMovie));
+            var (deleted, blocked) = await _service.DeleteAsync(selectedMovieIds);
+
+            if (deleted.Any())
+            {
+                TempData["SuccessMessage"] = $"Usunięto {deleted.Count} film(y).";
+            }
+
+            if (blocked.Any())
+            {
+                TempData["ErrorMessage"] = $"Nie można usunąć {blocked.Count} filmów – mają zaplanowane seanse.";
+            }
+
+            return RedirectToAction("DeleteMovie");
         }
     }
 }

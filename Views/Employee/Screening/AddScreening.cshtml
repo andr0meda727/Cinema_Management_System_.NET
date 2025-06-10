@@ -1,0 +1,48 @@
+@model Cinema_Management_System.DTOs.Employee.AddScreeningDTO
+
+@{
+    ViewData["Title"] = "Add Screening";
+    var movies = ViewBag.Movies as List<Cinema_Management_System.Models.Cinema.Movie>;
+    var rooms = ViewBag.Rooms as List<Cinema_Management_System.Models.Cinema.ScreeningRoom>;
+}
+
+<h2 class="mb-4">Dodaj seans</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<form asp-action="AddScreening" method="post">
+    <div class="mb-3">
+        <label class="form-label">Film</label>
+        <select asp-for="MovieId" class="form-select">
+            @foreach (var movie in movies)
+            {
+                <option value="@movie.Id">@movie.Title</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Sala</label>
+        <select asp-for="ScreeningRoomId" class="form-select">
+            @foreach (var room in rooms)
+            {
+                <option value="@room.Id">@room.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Godzina rozpoczêcia</label>
+        <input asp-for="StartTime" type="datetime-local" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Cena podstawowa (z³)</label>
+        <input asp-for="BasePrice" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Dodaj seans</button>
+</form>

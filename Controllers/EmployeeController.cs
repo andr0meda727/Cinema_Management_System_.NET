@@ -9,11 +9,19 @@ namespace Cinema_Management_System.Controllers
     {
         private readonly DeleteMovieService _deleteMovieService;
         private readonly DeleteScreeningRoomService _deleteScreeningRoomService;
+        private readonly EditMovieService _editMovieService;
+        private readonly BrowseScreeningRoomService _browseScreeningRoomService;
 
-        public EmployeeController(DeleteMovieService deleteMovieService, DeleteScreeningRoomService deleteScreeningRoomService)
+
+        public EmployeeController(DeleteMovieService deleteMovieService, 
+            DeleteScreeningRoomService deleteScreeningRoomService,
+            EditMovieService editMovieService,
+            BrowseScreeningRoomService browseScreeningRoomService)
         {
             _deleteMovieService = deleteMovieService;
             _deleteScreeningRoomService = deleteScreeningRoomService;
+            _editMovieService = editMovieService;
+            _browseScreeningRoomService = browseScreeningRoomService;
         }
         public IActionResult Index()
         {
@@ -25,9 +33,9 @@ namespace Cinema_Management_System.Controllers
             return View("~/Views/Employee/Movie/AddMovie.cshtml");
         }
 
-        public IActionResult EditMovies()
+        public IActionResult EditMovie()
         {
-            return View();
+            return View("~/Views/Employee/Movie/EditMovie.cshtml");
         }
 
         public async Task<IActionResult> DeleteMovie()
@@ -56,10 +64,17 @@ namespace Cinema_Management_System.Controllers
             var screeningRooms = await _deleteScreeningRoomService.GetAllAsync();
             return View("~/Views/Employee/ScreeningRoom/DeleteScreeningRoom.cshtml", screeningRooms);
         }
-
-        public IActionResult BrowseScreeningRooms()
+        public async Task<IActionResult> BrowseScreeningRooms()
         {
-            return View();
+            var rooms = await _browseScreeningRoomService.GetAllAsync();
+            return View("~/Views/Employee/ScreeningRoom/BrowseScreeningRooms.cshtml", rooms);
+        }
+
+        public async Task<IActionResult> ViewRoomDetails(int id)
+        {
+            var room = await _browseScreeningRoomService.GetByIdAsync(id);
+            if (room == null) return NotFound();
+            return View("~/Views/Employee/ScreeningRoom/ViewRoomDetails.cshtml", room);
         }
 
         public IActionResult AddScreening()
