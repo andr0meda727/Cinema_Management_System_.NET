@@ -25,4 +25,7 @@
 	  <PackageReference Include="QuestPDF" Version="2025.5.1" />
 	  <PackageReference Include="Riok.Mapperly" Version="4.2.1" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\Email\" />
+  </ItemGroup>
 </Project>

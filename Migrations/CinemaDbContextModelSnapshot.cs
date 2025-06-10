@@ -40,6 +40,7 @@ namespace Cinema_Management_System.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagePath")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -105,9 +106,6 @@ namespace Cinema_Management_System.Migrations
                     b.Property<int>("SeatInRow")
                         .HasColumnType("int");
 
-                    b.Property<bool>("SeatStatus")
-                        .HasColumnType("bit");
-
                     b.Property<int>("SeatType")
                         .HasColumnType("int");
 
@@ -129,6 +127,9 @@ namespace Cinema_Management_System.Migrations
                     b.Property<decimal>("FinalPrice")
                         .HasColumnType("decimal(8,2)");
 
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("ScreeningId")
                         .HasColumnType("int");
 
@@ -143,8 +144,7 @@ namespace Cinema_Management_System.Migrations
 
                     b.HasIndex("ScreeningId");
 
-                    b.HasIndex("SeatId")
-                        .IsUnique();
+                    b.HasIndex("SeatId");
 
                     b.HasIndex("UserId");
 
@@ -404,8 +404,8 @@ namespace Cinema_Management_System.Migrations
                         .IsRequired();
 
                     b.HasOne("Cinema_Management_System.Models.Cinema.Seat", "Seat")
-                        .WithOne("Ticket")
-                        .HasForeignKey("Cinema_Management_System.Models.Cinema.Ticket", "SeatId")
+                        .WithMany()
+                        .HasForeignKey("SeatId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -502,12 +502,6 @@ namespace Cinema_Management_System.Migrations
                     b.Navigation("Screenings");
 
                     b.Navigation("Seats");
-                });
-
-            modelBuilder.Entity("Cinema_Management_System.Models.Cinema.Seat", b =>
-                {
-                    b.Navigation("Ticket")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Cinema_Management_System.Models.Users.ApplicationUser", b =>

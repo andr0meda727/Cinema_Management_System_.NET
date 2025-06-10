@@ -1,10 +1,11 @@
 ﻿using Cinema_Management_System.Data;
 using Cinema_Management_System.DTOs.Employee;
 using Cinema_Management_System.Models.Cinema;
+using Cinema_Management_System.Services.Interfaces;
 
 namespace Cinema_Management_System.Services.Employee
 {
-    public class ScreeningRoomService
+    public class ScreeningRoomService : IScreeningRoomService
     {
         private readonly CinemaDbContext _db;
 
@@ -15,8 +16,6 @@ namespace Cinema_Management_System.Services.Employee
 
         public async Task<bool> AddAsync(CreateScreeningRoomDTO dto)
         {
-   
-                // Oblicz liczbę miejsc
                 int totalSeats = dto.Rows * dto.SeatsPerRow;
 
                 var room = new ScreeningRoom
@@ -29,9 +28,8 @@ namespace Cinema_Management_System.Services.Employee
                 };
 
                 _db.ScreeningRooms.Add(room);
-                await _db.SaveChangesAsync(); // Potrzebne do uzyskania room.Id
+                await _db.SaveChangesAsync();
 
-                // Tworzenie miejsc
                 var seats = new List<Seat>();
                 for (int rowIndex = 0; rowIndex < dto.Rows; rowIndex++)
                 {
@@ -45,9 +43,7 @@ namespace Cinema_Management_System.Services.Employee
                                 ScreeningRoomId = room.Id,
                                 Row = rowLetter.ToString(),
                                 SeatInRow = seatNum,
-                                SeatType = SeatTypes.DOUBLE,
-                                SeatStatus = false,
-                                ScreeningRoom = room
+                                SeatType = SeatTypes.DOUBLE
                             });
                         } else if (rowIndex == dto.SeatsPerRow - 2)
                         {
@@ -56,9 +52,7 @@ namespace Cinema_Management_System.Services.Employee
                                 ScreeningRoomId = room.Id,
                                 Row = rowLetter.ToString(),
                                 SeatInRow = seatNum,
-                                SeatType = SeatTypes.VIP,
-                                SeatStatus = false,
-                                ScreeningRoom = room
+                                SeatType = SeatTypes.VIP
                             });
                         } else
                         {
@@ -67,9 +61,7 @@ namespace Cinema_Management_System.Services.Employee
                                 ScreeningRoomId = room.Id,
                                 Row = rowLetter.ToString(),
                                 SeatInRow = seatNum,
-                                SeatType = SeatTypes.STANDARD,
-                                SeatStatus = false,
-                                ScreeningRoom = room
+                                SeatType = SeatTypes.STANDARD
                             });
                         }
                     }

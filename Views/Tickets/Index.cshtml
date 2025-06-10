@@ -1,0 +1,87 @@
+﻿@model List<Cinema_Management_System.DTOs.Tickets.BasicTicketDTO>
+
+@{
+    ViewData["Title"] = "Moje bilety";
+}
+
+<div class="container py-5">
+    <h2 class="mb-4 text-center">Moje bilety</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            Nie posiadasz żadnych biletów.
+        </div>
+    }
+    else
+    {
+        <h4 class="mb-3">Nadchodzące seanse</h4>
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>ID biletu</th>
+                    <th>Tytuł filmu</th>
+                    <th>Godzina seansu</th>
+                    <th>Cena</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ticket in Model.Where(t => t.DateStartTime >= DateTime.Now))
+                {
+                    <tr class="text-center">
+                        <td>@ticket.Id</td>
+                        <td>@ticket.MovieTitle</td>
+                        <td>@ticket.DateStartTime.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td>@ticket.FinalPrice.ToString("0.00") zł</td>
+                        <td>
+                            <a asp-controller="Tickets" asp-action="Details" asp-route-id="@ticket.Id" class="btn btn-sm btn-outline-primary">
+                                Szczegóły
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (Model.Any(t => t.DateStartTime < DateTime.Now))
+        {
+            <div class="mt-5">
+                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#pastTicketsCollapse" aria-expanded="false" aria-controls="pastTicketsCollapse">
+                    Pokaż bilety z przeszłości
+                </button>
+
+                <div class="collapse mt-3" id="pastTicketsCollapse">
+                    <h4 class="mb-3">Zakończone seanse</h4>
+                    <table class="table table-hover table-bordered align-middle">
+                        <thead class="table-secondary text-center">
+                            <tr>
+                                <th>ID biletu</th>
+                                <th>Tytuł filmu</th>
+                                <th>Godzina seansu</th>
+                                <th>Cena</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var ticket in Model.Where(t => t.DateStartTime < DateTime.Now))
+                            {
+                                <tr class="text-center">
+                                    <td>@ticket.Id</td>
+                                    <td>@ticket.MovieTitle</td>
+                                    <td>@ticket.DateStartTime.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td>@ticket.FinalPrice.ToString("0.00") zł</td>
+                                    <td>
+                                        <a asp-controller="Tickets" asp-action="Details" asp-route-id="@ticket.Id" class="btn btn-sm btn-outline-secondary">
+                                            Szczegóły
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    }
+</div>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Cinema_Management_System.Models.Cinema
 {
@@ -26,18 +25,18 @@ namespace Cinema_Management_System.Models.Cinema
 
         [Required]
         [Display(Name = "Screen Format")]
-        public ScreenFormats Format { get; set; }
+        public required ScreenFormats Format { get; set; }
 
         [Required]
         [Range(3, 20)] // min 3 rows
         [Display(Name = "Number of Rows")]
-        public int Rows { get; set; }
+        public required int Rows { get; set; }
 
         [Required]
         [Range(5, 20)] // min 5 seats per row
         [Display(Name = "Seats Per Row")]
-        public int SeatsPerRow { get; set; }
-        public int NumberOfSeats { get; set; }
+        public required int SeatsPerRow { get; set; }
+        public required int NumberOfSeats { get; set; }
 
         public ICollection<Screening> Screenings { get; set; } = new List<Screening>();
         public ICollection<Seat> Seats { get; set; } = new List<Seat>();

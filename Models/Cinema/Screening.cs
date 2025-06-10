@@ -8,10 +8,10 @@ public class Screening
     public int Id { get; set; }
 
     [Required]
-    public int MovieId { get; set; }
+    public required int MovieId { get; set; }
 
     [Required]
-    public int ScreeningRoomId { get; set; }
+    public required int ScreeningRoomId { get; set; }
 
     [Required]
     public DateTime DateStartTime { get; set; }
@@ -24,10 +24,10 @@ public class Screening
     public decimal BasePrice { get; set; }
 
     [ForeignKey("MovieId")]
-    public required Movie Movie { get; set; }
+    public Movie? Movie { get; set; }
 
     [ForeignKey("ScreeningRoomId")]
-    public required ScreeningRoom ScreeningRoom { get; set; }
+    public ScreeningRoom? ScreeningRoom { get; set; }
 
     public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }

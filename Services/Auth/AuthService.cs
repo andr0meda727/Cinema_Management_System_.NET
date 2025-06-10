@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
+using Cinema_Management_System.Services.Interfaces;
 
 namespace Cinema_Management_System.Services.Auth
 {

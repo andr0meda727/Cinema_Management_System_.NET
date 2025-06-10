@@ -71,21 +71,21 @@ namespace Cinema_Management_System.Data
                         Description = "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
                         MovieLength = 166,
                         AgeCategory = AgeCategory.TwelvePlus,
-                        ImagePath = "/uploads/dune2.jpg"
+                        ImagePath = "dune2.jpg"
                     },
                     new() {
                         Title = "The Batman",
                         Description = "When a sadistic serial killer begins murdering key political figures in Gotham, Batman is forced to investigate.",
                         MovieLength = 176,
                         AgeCategory = AgeCategory.SixteenPlus,
-                        ImagePath = "/uploads/batman.jpg"
+                        ImagePath = "batman.jpg"
                     },
                     new() {
                         Title = "Elemental",
                         Description = "In a city where fire, water, land and air residents live together, a fiery young woman and a go-with-the-flow guy discover something elemental: how much they actually have in common.",
                         MovieLength = 102,
                         AgeCategory = AgeCategory.General,
-                        ImagePath = "/uploads/elemental.jpg"
+                        ImagePath = "elemental.jpg"
                     }
                 };
                 await context.Movies.AddRangeAsync(movies);
@@ -137,11 +137,9 @@ namespace Cinema_Management_System.Data
                             seats.Add(new Seat
                             {
                                 ScreeningRoomId = room.Id,
-                                ScreeningRoom = room,
                                 Row = ((char)('A' + row)).ToString(),
                                 SeatInRow = seatNum,
-                                SeatType = seatType,
-                                SeatStatus = false
+                                SeatType = seatType
                             });
                         }
                     }
@@ -168,9 +166,7 @@ namespace Cinema_Management_System.Data
                         screenings.Add(new Screening
                         {
                             MovieId = movie.Id,
-                            Movie = movie,
                             ScreeningRoomId = room.Id,
-                            ScreeningRoom = room,
                             DateStartTime = startTime,
                             DateEndTime = endTime,
                             BasePrice = room.Format switch
@@ -198,22 +194,13 @@ namespace Cinema_Management_System.Data
                     var tickets = seats.Select(seat => new Ticket
                     {
                         ScreeningId = screening.Id,
-                        Screening = screening,
                         SeatId = seat.Id,
-                        Seat = seat,
                         UserId = user.Id,
-                        User = user,
-                        FinalPrice = screening.BasePrice * TicketPricingHelper.GetSeatTypeMultiplier(seat.SeatType)
+                        FinalPrice = screening.BasePrice * TicketPricingHelper.GetSeatTypeMultiplier(seat.SeatType),
+                        PurchaseDate = DateTime.UtcNow
                     }).ToList();
 
                     await context.Tickets.AddRangeAsync(tickets);
-                    await context.SaveChangesAsync();
-
-                    // Mark seats as occupied
-                    foreach (var seat in seats)
-                    {
-                        seat.SeatStatus = true;
-                    }
                     await context.SaveChangesAsync();
                 }
             }

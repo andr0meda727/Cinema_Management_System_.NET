@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Cinema_Management_System.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -61,7 +61,7 @@ namespace Cinema_Management_System.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false),
                     MovieLength = table.Column<int>(type: "int", nullable: false),
                     AgeCategory = table.Column<int>(type: "int", maxLength: 100, nullable: false),
-                    ImagePath = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                    ImagePath = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -229,8 +229,7 @@ namespace Cinema_Management_System.Migrations
                     ScreeningRoomId = table.Column<int>(type: "int", nullable: false),
                     Row = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
                     SeatInRow = table.Column<int>(type: "int", nullable: false),
-                    SeatType = table.Column<int>(type: "int", nullable: false),
-                    SeatStatus = table.Column<bool>(type: "bit", nullable: false)
+                    SeatType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -252,6 +251,7 @@ namespace Cinema_Management_System.Migrations
                     ScreeningId = table.Column<int>(type: "int", nullable: false),
                     SeatId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PurchaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FinalPrice = table.Column<decimal>(type: "decimal(8,2)", nullable: false)
                 },
                 constraints: table =>
@@ -339,8 +339,7 @@ namespace Cinema_Management_System.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Tickets_SeatId",
                 table: "Tickets",
-                column: "SeatId",
-                unique: true);
+                column: "SeatId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tickets_UserId",

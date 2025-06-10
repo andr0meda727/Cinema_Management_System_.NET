@@ -20,8 +20,8 @@ namespace Cinema_Management_System.Data
 
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.Seat)
-                .WithOne(s => s.Ticket)
-                .HasForeignKey<Ticket>(t => t.SeatId)
+                .WithMany()
+                .HasForeignKey(t => t.SeatId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Seat>()

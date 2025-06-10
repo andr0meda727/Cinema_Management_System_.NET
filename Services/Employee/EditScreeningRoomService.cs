@@ -63,7 +63,6 @@ namespace Cinema_Management_System.Services.Employee
                         SeatInRow = j,
                         ScreeningRoomId = room.Id,
                         SeatType = SeatTypes.STANDARD,
-                        SeatStatus = false,
                         ScreeningRoom = room
                     });
                 }
