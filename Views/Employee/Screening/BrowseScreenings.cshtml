@@ -1,0 +1,46 @@
+@model List<Cinema_Management_System.DTOs.Employee.BrowseScreeningDTO>
+
+@{
+    ViewData["Title"] = "Przegl¹daj seanse";
+}
+
+<h2>Przegl¹danie seansów</h2>
+
+<form method="get" asp-controller="BrowseScreening" asp-action="Index">
+    <div class="form-group">
+        <label for="datePicker">Data:</label>
+        <input type="date" id="datePicker" name="date" value="@ViewBag.SelectedDate" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Poka¿ seanse</button>
+</form>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Film</th>
+                <th>Sala</th>
+                <th>Start</th>
+                <th>Koniec</th>
+                <th>Cena bazowa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var screening in Model)
+            {
+                <tr>
+                    <td>@screening.MovieTitle</td>
+                    <td>@screening.RoomName</td>
+                    <td>@screening.DateStartTime.ToString("g")</td>
+                    <td>@screening.DateEndTime.ToString("g")</td>
+                    <td>@screening.BasePrice.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Brak seansów dla wybranej daty.</p>
+}
