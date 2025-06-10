@@ -210,5 +210,35 @@ namespace Cinema_Management_System.Services.User
                 .Select(t => _ticketMapper.TicketToTicketDetailedDTO(t))
                 .ToListAsync();
         }
+
+        public async Task<bool> RefundTicketAsync(string userId, int ticketId)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var ticket = await _context.Tickets
+                    .Include(t => t.Screening)
+                    .FirstOrDefaultAsync(t => t.Id == ticketId && t.UserId == userId);
+
+                if (ticket == null) return false;
+
+                if (ticket.Screening.DateStartTime <= DateTime.Now)
+                {
+                    return false;
+                }
+
+                _context.Tickets.Remove(ticket);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+                return true;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                return false;
+            }
+        }
     }
 }

@@ -1,7 +1,8 @@
 ﻿using Cinema_Management_System.Models.Users;
+using Cinema_Management_System.Services.Interfaces;
 using Cinema_Management_System.Services.PDF;
 using Cinema_Management_System.Services.User;
-using Cinema_Management_System.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
  
@@ -42,6 +43,25 @@ namespace Cinema_Management_System.Controllers.User
             var ticket = await _ticketService.GetUserDetailedTicketAsync(user.Id, ticketId);
 
             return View(ticket);
+        }
+
+        [HttpPost("Refund/{ticketId}")]
+        [Authorize]
+        public async Task<IActionResult> RefundTicket(int ticketId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return Unauthorized();
+
+            var result = await _ticketService.RefundTicketAsync(user.Id, ticketId);
+
+            if (!result)
+            {
+                TempData["ErrorMessage"] = "Nie można zwrócić biletu";
+                return RedirectToAction("Index");
+            }
+
+            TempData["SuccessMessage"] = "Bilet został pomyślnie zwrócony";
+            return RedirectToAction("Index");
         }
 
         [Route("PDF/{ticketId}")]
