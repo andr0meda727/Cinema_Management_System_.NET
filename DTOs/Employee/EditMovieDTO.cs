@@ -25,5 +25,7 @@ namespace Cinema_Management_System.DTOs.Employee
         public IFormFile? PosterFile { get; set; }
 
         public string? ExistingImagePath { get; set; }
+
+        public bool HasScreenings { get; set; } = false;
     }
 }

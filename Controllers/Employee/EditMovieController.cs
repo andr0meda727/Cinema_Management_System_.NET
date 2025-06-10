@@ -31,7 +31,7 @@ namespace Cinema_Management_System.Controllers.Employee
             {
                 return NotFound();
             }
-
+            ViewBag.HasScreenings = movieDto.HasScreenings;
             return View("~/Views/Employee/Movie/EditOneMovie.cshtml", movieDto);
         }
 
@@ -42,16 +42,20 @@ namespace Cinema_Management_System.Controllers.Employee
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.HasScreenings = dto.HasScreenings;
                 return View("~/Views/Employee/Movie/EditOneMovie.cshtml", dto);
             }
 
             var success = await _service.UpdateMovieAsync(id, dto);
             if (!success)
             {
-                return NotFound();
+                ViewBag.HasScreenings = dto.HasScreenings;
+                ViewBag.ErrorMessage = "Nie można zmienić tytułu ani długości filmu, ponieważ istnieją już zaplanowane seanse.";
+                return View("~/Views/Employee/Movie/EditOneMovie.cshtml", dto);
             }
 
-            return RedirectToAction("EditMovie"); // np. powrót do listy filmów
+            // SUKCES – wróć do listy
+            return RedirectToAction("EditMovie");
         }
     }
 }

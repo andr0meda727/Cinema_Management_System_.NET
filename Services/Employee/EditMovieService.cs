@@ -31,19 +31,38 @@ namespace Cinema_Management_System.Services.Employee
                 Description = movie.Description,
                 MovieLength = movie.MovieLength,
                 AgeCategory = movie.AgeCategory,
-                ExistingImagePath = movie.ImagePath
+                ExistingImagePath = movie.ImagePath,
+                HasScreenings = movie.Screenings.Any()
             };
         }
 
         public async Task<bool> UpdateMovieAsync(int id, EditMovieDTO dto)
         {
-            var movie = await _db.Movies.FindAsync(id);
+            var movie = await _db.Movies
+                .Include(m => m.Screenings)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (movie == null)
                 return false;
 
-            movie.Title = dto.Title;
+            bool hasScreenings = movie.Screenings.Any();
+
+            // Zabezpieczenie: użytkownik NIE MOŻE zmienić tytułu lub długości, jeśli film ma seanse
+            if (hasScreenings &&
+                (movie.Title != dto.Title || movie.MovieLength != dto.MovieLength))
+            {
+                // Możesz logować, rzucać wyjątek, albo po prostu zwrócić false
+                return false;
+            }
+
+            // Jeśli nie było seansów – aktualizujemy też tytuł i długość
+            if (!hasScreenings)
+            {
+                movie.Title = dto.Title;
+                movie.MovieLength = dto.MovieLength;
+            }
+
             movie.Description = dto.Description;
-            movie.MovieLength = dto.MovieLength;
             movie.AgeCategory = dto.AgeCategory;
 
             if (dto.PosterFile != null && dto.PosterFile.Length > 0)
@@ -62,5 +81,6 @@ namespace Cinema_Management_System.Services.Employee
             await _db.SaveChangesAsync();
             return true;
         }
+
     }
 }
