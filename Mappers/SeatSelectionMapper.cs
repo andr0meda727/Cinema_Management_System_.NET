@@ -8,11 +8,10 @@ namespace Cinema_Management_System.Mappers;
 [Mapper]
 public partial class SeatSelectionMapper
 {
-    [MapProperty(nameof(Seat.SeatStatus), nameof(SeatDTO.isTaken))]
     [MapperIgnoreSource(nameof(Seat.ScreeningRoomId))]
     [MapperIgnoreSource(nameof(Seat.ScreeningRoom))]
-    [MapperIgnoreSource(nameof(Seat.Ticket))]
     [MapperIgnoreTarget(nameof(SeatDTO.Price))]
+    [MapperIgnoreTarget(nameof(SeatDTO.isTaken))]
     public partial SeatDTO SeatToSeatDTO(Seat seat);
 
     public partial List<SeatDTO> MapSeats(List<Seat> seats);

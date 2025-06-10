@@ -1,4 +1,4 @@
-﻿namespace Cinema_Management_System.Services.Auth
+﻿namespace Cinema_Management_System.Services.Interfaces
 {
     public interface ICookieService
     {

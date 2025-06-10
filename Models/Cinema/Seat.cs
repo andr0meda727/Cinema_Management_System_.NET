@@ -16,7 +16,7 @@ namespace Cinema_Management_System.Models.Cinema
         public int Id { get; set; }
 
         [Required]
-        public int ScreeningRoomId { get; set; }
+        public required int ScreeningRoomId { get; set; }
 
         [Required]
         [StringLength(2)]
@@ -25,18 +25,12 @@ namespace Cinema_Management_System.Models.Cinema
         [Required]
         [Range(1, 100)]
         [Display(Name = "Seat in Row")]
-        public int SeatInRow { get; set; }
+        public required int SeatInRow { get; set; }
 
         [Required]
-        public SeatTypes SeatType { get; set; }
-
-        [Required]
-        public bool SeatStatus { get; set; } // 0 - free, 1 - occupied
+        public required SeatTypes SeatType { get; set; }
 
         [ForeignKey("ScreeningRoomId")]
-        public required ScreeningRoom ScreeningRoom { get; set; }
-
-        public Ticket? Ticket { get; set; }
+        public ScreeningRoom? ScreeningRoom { get; set; }
     }
-
 }

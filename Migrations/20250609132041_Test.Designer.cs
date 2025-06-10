@@ -4,6 +4,7 @@ using Cinema_Management_System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinema_Management_System.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    partial class CinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250609132041_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,6 +109,9 @@ namespace Cinema_Management_System.Migrations
                     b.Property<int>("SeatInRow")
                         .HasColumnType("int");
 
+                    b.Property<bool>("SeatStatus")
+                        .HasColumnType("bit");
+
                     b.Property<int>("SeatType")
                         .HasColumnType("int");
 
@@ -144,7 +150,8 @@ namespace Cinema_Management_System.Migrations
 
                     b.HasIndex("ScreeningId");
 
-                    b.HasIndex("SeatId");
+                    b.HasIndex("SeatId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -404,8 +411,8 @@ namespace Cinema_Management_System.Migrations
                         .IsRequired();
 
                     b.HasOne("Cinema_Management_System.Models.Cinema.Seat", "Seat")
-                        .WithMany()
-                        .HasForeignKey("SeatId")
+                        .WithOne("Ticket")
+                        .HasForeignKey("Cinema_Management_System.Models.Cinema.Ticket", "SeatId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -502,6 +509,11 @@ namespace Cinema_Management_System.Migrations
                     b.Navigation("Screenings");
 
                     b.Navigation("Seats");
+                });
+
+            modelBuilder.Entity("Cinema_Management_System.Models.Cinema.Seat", b =>
+                {
+                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("Cinema_Management_System.Models.Users.ApplicationUser", b =>

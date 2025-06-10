@@ -1,11 +1,12 @@
 ﻿using Cinema_Management_System.Data;
 using Cinema_Management_System.DTOs.Screening;
 using Cinema_Management_System.Mappers;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cinema_Management_System.Services
+namespace Cinema_Management_System.Services.User
 {
-    public class ScreeningService
+    public class ScreeningService : IScreeningService
     {
         private readonly CinemaDbContext _context;
         private readonly ScreeningMapper _mapper;
@@ -18,12 +19,12 @@ namespace Cinema_Management_System.Services
 
         public async Task<List<BasicScreeningDTO>> GetScreeningsAsyncDate(DateTime date)
         {
-            var startOfDay = date.Date;
+            var currentTime = DateTime.Now;
             var endOfDay = date.Date.AddDays(1).AddTicks(-1);
 
             var screenings = await _context.Screenings
                 .Include(s => s.Movie)
-                .Where(s => s.DateStartTime >= startOfDay && s.DateStartTime <= endOfDay)
+                .Where(s => s.DateStartTime >= currentTime && s.DateStartTime <= endOfDay)
                 .OrderBy(s => s.DateStartTime)
                 .ToListAsync();
 

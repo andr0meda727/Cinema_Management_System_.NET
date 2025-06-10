@@ -1,0 +1,55 @@
+﻿@model List<Cinema_Management_System.DTOs.Tickets.DetailedTicketDTO>
+
+@{
+    ViewData["Title"] = "Podsumowanie zamówienia";
+}
+
+<div class="container py-5">
+    <h2 class="mb-4">Podsumowanie zamówienia</h2>
+
+    <div class="alert alert-success">
+        <h4>Dziękujemy za zakup!</h4>
+    </div>
+
+    <div class="row">
+        @foreach (var ticket in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5>@ticket.MovieTitle</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <p><strong>Data:</strong> @ticket.DateStartTime.ToString("dd.MM.yyyy")</p>
+                                <p><strong>Godzina:</strong> @ticket.DateStartTime.ToString("HH:mm") - @ticket.DateEndTime.ToString("HH:mm")</p>
+                                <p><strong>Sala:</strong> @ticket.ScreeningRoomName</p>
+                            </div>
+                            <div class="col-6">
+                                <p><strong>Miejsce:</strong> Rząd @ticket.SeatRow, Miejsce @ticket.SeatNumber</p>
+                                <p><strong>Typ:</strong> @ticket.SeatType</p>
+                                <p><strong>Cena:</strong> @ticket.FinalPrice.ToString("0.00") zł</p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <p><strong>ID biletu:</strong> @ticket.Id</p>
+                        </div>
+                    </div>
+                    <form asp-action="PDF" asp-controller="Tickets" asp-route-id="@ticket.Id" method="post">
+                        <input type="hidden" name="ticketId" value="@ticket.Id" />
+                        <button type="submit" class="btn btn-outline-danger position-absolute m-2" style="right: 0; bottom: 0">
+                            Pobierz PDF
+                        </button>
+                    </form>
+            </div>
+            </div>
+        }
+    </div>
+
+    <div class="mt-4 p-3 bg-light rounded">
+        <h4>Podsumowanie</h4>
+        <p><strong>Liczba biletów:</strong> @Model.Count</p>
+        <p><strong>Całkowita kwota:</strong> @Model.Sum(t => t.FinalPrice).ToString("0.00") zł</p>
+    </div>
+</div>
