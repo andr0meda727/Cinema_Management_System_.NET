@@ -3,12 +3,9 @@ using Cinema_Management_System.DTOs.Seat;
 using Cinema_Management_System.DTOs.Tickets;
 using Cinema_Management_System.Mappers;
 using Cinema_Management_System.Models.Cinema;
-using Cinema_Management_System.Models.Users;
 using Cinema_Management_System.Services.Helpers;
 using Cinema_Management_System.Services.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace Cinema_Management_System.Services.User
 {

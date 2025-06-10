@@ -1,10 +1,11 @@
 ﻿using Cinema_Management_System.Data;
 using Cinema_Management_System.DTOs.Employee;
 using Cinema_Management_System.Models.Cinema;
+using Cinema_Management_System.Services.Interfaces;
 
 namespace Cinema_Management_System.Services.Employee
 {
-    public class ScreeningRoomService
+    public class ScreeningRoomService : IScreeningRoomService
     {
         private readonly CinemaDbContext _db;
 

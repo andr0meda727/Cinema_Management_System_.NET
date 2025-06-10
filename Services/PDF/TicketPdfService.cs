@@ -1,4 +1,5 @@
 ﻿using Cinema_Management_System.DTOs.Tickets;
+using Cinema_Management_System.Services.Interfaces;
 using QRCoder;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -6,7 +7,7 @@ using QuestPDF.Infrastructure;
 
 namespace Cinema_Management_System.Services.PDF
 {
-    public class TicketPdfService
+    public class TicketPdfService : ITicketPdfService
     {
         public MemoryStream GeneratePdf(DetailedTicketDTO ticket)
         {

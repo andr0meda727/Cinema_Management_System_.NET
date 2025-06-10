@@ -1,6 +1,6 @@
 ﻿using Cinema_Management_System.DTOs.Tickets;
 using Cinema_Management_System.Models.Users;
-using Cinema_Management_System.Services.User;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,12 +9,12 @@ namespace Cinema_Management_System.Controllers.User
     [Route("BuyTicket")]
     public class BuyTicketController : Controller
     {
-        private readonly TicketService _ticketService;
+        private readonly ITicketService _ticketService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public BuyTicketController(TicketService seatSelectionService, UserManager<ApplicationUser> userManager)
+        public BuyTicketController(ITicketService ticketService, UserManager<ApplicationUser> userManager)
         {
-            _ticketService = seatSelectionService;
+            _ticketService = ticketService;
             _userManager = userManager;
         }
 

@@ -1,20 +1,20 @@
 ﻿using Cinema_Management_System.Models.Users;
 using Cinema_Management_System.Services.PDF;
 using Cinema_Management_System.Services.User;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using QuestPDF.Fluent;
  
 namespace Cinema_Management_System.Controllers.User
 {
     [Route("Tickets")]
     public class TicketsController : Controller
     {
-        private readonly TicketService _ticketService;
-        private readonly TicketPdfService _ticketPdfService;
+        private readonly ITicketService _ticketService;
+        private readonly ITicketPdfService _ticketPdfService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public TicketsController(TicketService ticketService, UserManager<ApplicationUser> userManager, TicketPdfService ticketPdfService)
+        public TicketsController(ITicketService ticketService, UserManager<ApplicationUser> userManager, ITicketPdfService ticketPdfService)
         {
             _ticketService = ticketService;
             _userManager = userManager;

@@ -1,11 +1,12 @@
 ﻿using Cinema_Management_System.Data;
 using Cinema_Management_System.DTOs.Screening;
 using Cinema_Management_System.Mappers;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cinema_Management_System.Services.User
 {
-    public class ScreeningService
+    public class ScreeningService : IScreeningService
     {
         private readonly CinemaDbContext _context;
         private readonly ScreeningMapper _mapper;

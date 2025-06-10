@@ -31,15 +31,18 @@ namespace Cinema_Management_System
             builder.Services.AddDbContext<CinemaDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ScreeningMapper>();
             builder.Services.AddScoped<TicketMapper>();
-            builder.Services.AddScoped<ScreeningService>();
-            builder.Services.AddScoped<ICookieService, CookieService>();
             builder.Services.AddScoped<SeatSelectionMapper>();
-            builder.Services.AddScoped<TicketService>();
-            builder.Services.AddScoped<ScreeningRoomService>();
-            builder.Services.AddScoped<TicketPdfService>();
+
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<ICookieService, CookieService>();
+
+            builder.Services.AddScoped<IScreeningService, ScreeningService>();
+            builder.Services.AddScoped<IScreeningRoomService, ScreeningRoomService>();
+
+            builder.Services.AddScoped<ITicketService, TicketService>();
+            builder.Services.AddScoped<ITicketPdfService, TicketPdfService>();
 
             //ASP.NET Identity options
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>

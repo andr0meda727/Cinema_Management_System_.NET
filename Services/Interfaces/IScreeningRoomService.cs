@@ -1,6 +1,9 @@
-﻿namespace Cinema_Management_System.Services.Interfaces
+﻿using Cinema_Management_System.DTOs.Employee;
+
+namespace Cinema_Management_System.Services.Interfaces
 {
-    public class IScreeningRoomService
+    public interface IScreeningRoomService
     {
+        Task<bool> AddAsync(CreateScreeningRoomDTO dto);
     }
 }
