@@ -5,7 +5,9 @@ using Cinema_Management_System.Mappers;
 using Cinema_Management_System.Models.Cinema;
 using Cinema_Management_System.Services.Helpers;
 using Cinema_Management_System.Services.Interfaces;
+using Cinema_Management_System.Services.PDF;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mail;
 
 namespace Cinema_Management_System.Services.User
 {
@@ -14,13 +16,17 @@ namespace Cinema_Management_System.Services.User
         private readonly CinemaDbContext _context;
         private readonly SeatSelectionMapper _mapper;
         private readonly TicketMapper _ticketMapper;
+        private readonly ITicketPdfService _ticketPdfService;
+        private readonly IEmailService _emailService;
 
 
-        public TicketService(CinemaDbContext context, SeatSelectionMapper mapper, TicketMapper ticketMapper)
+        public TicketService(CinemaDbContext context, SeatSelectionMapper mapper, TicketMapper ticketMapper, ITicketPdfService pdfService,IEmailService emailService)
         {
             _context = context;
             _mapper = mapper;
             _ticketMapper = ticketMapper;
+            _ticketPdfService = pdfService;
+            _emailService = emailService;
         }
 
         public async Task<PurchaseResult> PurchaseTicketsAsync(BuyTicketDTO dto)
@@ -86,6 +92,35 @@ namespace Cinema_Management_System.Services.User
                 await _context.Tickets.AddRangeAsync(tickets);
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
+
+
+                var pdfStreams = new List<MemoryStream>();
+                foreach (var ticket in tickets)
+                {
+                    var ticketDto = _ticketMapper.TicketToTicketDetailedDTO(ticket);
+                    var pdfStream = _ticketPdfService.GeneratePdf(ticketDto);
+                    pdfStreams.Add(pdfStream);
+                }
+
+                var userEmail = user.Email;
+
+                var subject = "AbsoluteCinema - bilety";
+                var body = "<h1>Dziękujemy za zakup!</h1><p>W załącznikach znajdziesz swoje bilety.</p>";
+
+                var attachments = new List<Attachment>();
+                for (int i = 0; i < pdfStreams.Count; i++)
+                {
+                    var pdfStream = pdfStreams[i];
+                    var attachment = new Attachment(pdfStream, $"Bilet_{i + 1}.pdf", "application/pdf");
+                    attachments.Add(attachment);
+                }
+
+                await _emailService.SendEmailWithAttachmentsAsync(userEmail, subject, body, attachments);
+
+                foreach (var stream in pdfStreams)
+                {
+                    stream.Dispose();
+                }
 
                 return PurchaseResult.CreateSuccessResult(tickets.Select(t => t.Id).ToList());
             }

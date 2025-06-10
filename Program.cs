@@ -2,6 +2,7 @@ using Cinema_Management_System.Data;
 using Cinema_Management_System.Mappers;
 using Cinema_Management_System.Models.Users;
 using Cinema_Management_System.Services.Auth;
+using Cinema_Management_System.Services.Em;
 using Cinema_Management_System.Services.Employee;
 using Cinema_Management_System.Services.Interfaces;
 using Cinema_Management_System.Services.PDF;
@@ -43,6 +44,8 @@ namespace Cinema_Management_System
 
             builder.Services.AddScoped<ITicketService, TicketService>();
             builder.Services.AddScoped<ITicketPdfService, TicketPdfService>();
+
+            builder.Services.AddScoped<IEmailService, EmailService>();
 
             //ASP.NET Identity options
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
