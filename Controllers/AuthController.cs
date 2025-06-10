@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Cinema_Management_System.DTOs.Auth;
 using Cinema_Management_System.Models.Users;
-using Cinema_Management_System.Services.Auth;
+using Cinema_Management_System.Services.Interfaces;
 using Cinema_Management_System.Services.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;

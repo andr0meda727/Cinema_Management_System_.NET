@@ -9,7 +9,6 @@
 
     <div class="alert alert-success">
         <h4>Dziękujemy za zakup!</h4>
-        <p>ID zamówienia: @ViewBag.OrderId</p>
     </div>
 
     <div class="row">
@@ -37,10 +36,13 @@
                             <p><strong>ID biletu:</strong> @ticket.Id</p>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <a href="/Tickets/Print/@ticket.Id" class="btn btn-outline-primary">Pobierz PDF</a>
-                    </div>
-                </div>
+                    <form asp-action="PDF" asp-controller="Tickets" asp-route-id="@ticket.Id" method="post">
+                        <input type="hidden" name="ticketId" value="@ticket.Id" />
+                        <button type="submit" class="btn btn-outline-danger position-absolute m-2" style="right: 0; bottom: 0">
+                            Pobierz PDF
+                        </button>
+                    </form>
+            </div>
             </div>
         }
     </div>

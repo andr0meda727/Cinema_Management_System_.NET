@@ -1,7 +1,7 @@
 ﻿using Cinema_Management_System.DTOs.Auth;
 using Microsoft.AspNetCore.Identity;
 
-namespace Cinema_Management_System.Services.Auth
+namespace Cinema_Management_System.Services.Interfaces
 {
     public interface IAuthService
     {

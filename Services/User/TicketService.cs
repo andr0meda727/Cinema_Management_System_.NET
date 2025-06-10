@@ -5,13 +5,14 @@ using Cinema_Management_System.Mappers;
 using Cinema_Management_System.Models.Cinema;
 using Cinema_Management_System.Models.Users;
 using Cinema_Management_System.Services.Helpers;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace Cinema_Management_System.Services.User
 {
-    public class TicketService
+    public class TicketService : ITicketService
     {
         private readonly CinemaDbContext _context;
         private readonly SeatSelectionMapper _mapper;
@@ -23,29 +24,6 @@ namespace Cinema_Management_System.Services.User
             _context = context;
             _mapper = mapper;
             _ticketMapper = ticketMapper;
-        }
-
-        public class PurchaseResult
-        {
-            public bool Success { get; }
-            public string Message { get; }
-            public List<int> TicketIds { get; }
-            public Guid? OrderId { get; }
-
-            private PurchaseResult(bool success, string message, List<int> ticketIds, int? orderId = null)
-            {
-                Success = success;
-                Message = message;
-                TicketIds = ticketIds;
-                OrderId = Guid.NewGuid();
-            }
-
-
-            public static PurchaseResult SuccessResult(List<int> ticketIds, int? orderId = null)
-                => new(true, string.Empty, ticketIds, orderId);
-
-            public static PurchaseResult Failure(string message)
-                => new(false, message, null);
         }
 
         public async Task<PurchaseResult> PurchaseTicketsAsync(BuyTicketDTO dto)
@@ -60,7 +38,7 @@ namespace Cinema_Management_System.Services.User
 
                 if (screening == null)
                 {
-                    return PurchaseResult.Failure("Screening not found");
+                    return PurchaseResult.CreateFailureResult("Screening not found");
                 }
 
                 var user = await _context.Users
@@ -68,7 +46,7 @@ namespace Cinema_Management_System.Services.User
 
                 if (user == null)
                 {
-                    return PurchaseResult.Failure("User not found");
+                    return PurchaseResult.CreateFailureResult("User not found");
                 }
 
                 var seats = await _context.Seats
@@ -83,14 +61,14 @@ namespace Cinema_Management_System.Services.User
 
                 if (takenSeatIds.Any())
                 {
-                    return PurchaseResult.Failure($"Seats {string.Join(", ", takenSeatIds)} are already taken");
+                    return PurchaseResult.CreateFailureResult($"Seats {string.Join(", ", takenSeatIds)} are already taken");
                 }
 
 
                 if (seats.Count != dto.SeatIds.Count)
                 {
                     var missingSeats = dto.SeatIds.Except(seats.Select(s => s.Id)).ToList();
-                    return PurchaseResult.Failure($"Seats {string.Join(", ", missingSeats)} not found");
+                    return PurchaseResult.CreateFailureResult($"Seats {string.Join(", ", missingSeats)} not found");
                 }
 
                 var tickets = new List<Ticket>();
@@ -112,13 +90,13 @@ namespace Cinema_Management_System.Services.User
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
 
-                return PurchaseResult.SuccessResult(tickets.Select(t => t.Id).ToList());
+                return PurchaseResult.CreateSuccessResult(tickets.Select(t => t.Id).ToList());
             }
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
                 // logger
-                return PurchaseResult.Failure("Error processing your purchase");
+                return PurchaseResult.CreateFailureResult("Error processing your purchase");
             }
         }
 

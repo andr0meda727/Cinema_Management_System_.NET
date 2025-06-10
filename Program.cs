@@ -3,6 +3,8 @@ using Cinema_Management_System.Mappers;
 using Cinema_Management_System.Models.Users;
 using Cinema_Management_System.Services.Auth;
 using Cinema_Management_System.Services.Employee;
+using Cinema_Management_System.Services.Interfaces;
+using Cinema_Management_System.Services.PDF;
 using Cinema_Management_System.Services.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +22,7 @@ namespace Cinema_Management_System
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
             // Add services to the container.
             builder.Services.AddRazorPages();
@@ -36,6 +39,7 @@ namespace Cinema_Management_System
             builder.Services.AddScoped<SeatSelectionMapper>();
             builder.Services.AddScoped<TicketService>();
             builder.Services.AddScoped<ScreeningRoomService>();
+            builder.Services.AddScoped<TicketPdfService>();
 
             //ASP.NET Identity options
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>

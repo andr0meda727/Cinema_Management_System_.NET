@@ -50,7 +50,6 @@ namespace Cinema_Management_System.Controllers.User
                 {
                     success = true,
                     ticketIds = result.TicketIds,
-                    orderId = result.OrderId
                 });
             }
 
