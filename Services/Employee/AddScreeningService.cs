@@ -29,12 +29,12 @@ namespace Cinema_Management_System.Services.Employee
             var room = await _db.ScreeningRooms.FindAsync(dto.ScreeningRoomId);
 
             if (movie == null || room == null)
-                return (false, "Movie or room not found.");
+                return (false, "Brak filmu lub sali.");
 
             var endTime = dto.StartTime.AddMinutes(movie.MovieLength);
 
             if (dto.StartTime < DateTime.Now)
-                return (false, "Cannot add screening in the past.");
+                return (false, "Nie można tworzyć w przeszłości.");
 
             var conflict = await _db.Screenings
                 .Where(s => s.ScreeningRoomId == dto.ScreeningRoomId)
@@ -44,7 +44,7 @@ namespace Cinema_Management_System.Services.Employee
                 );
 
             if (conflict)
-                return (false, "Another screening overlaps with the selected time.");
+                return (false, "Konflikt z instniejącym seansem o tej godzinie.");
 
             var screening = new Screening
             {

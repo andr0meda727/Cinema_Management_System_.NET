@@ -40,7 +40,7 @@ namespace Cinema_Management_System
             builder.Services.AddScoped<ICookieService, CookieService>();
 
             builder.Services.AddScoped<IScreeningService, ScreeningService>();
-            builder.Services.AddScoped<IScreeningRoomService, ScreeningRoomService>();
+            builder.Services.AddScoped<IAddScreeningRoomService, AddScreeningRoomService>();
 
             builder.Services.AddScoped<ITicketService, TicketService>();
             builder.Services.AddScoped<ITicketPdfService, TicketPdfService>();

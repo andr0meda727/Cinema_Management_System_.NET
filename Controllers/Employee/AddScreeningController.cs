@@ -36,11 +36,15 @@ namespace Cinema_Management_System.Controllers.Employee
             var (success, msg) = await _service.AddAsync(dto);
             if (success)
             {
-                TempData["SuccessMessage"] = "Screening added successfully.";
+                TempData["SuccessMessage"] = "Pomyślnie dodano seans.";
                 return RedirectToAction("AddScreening");
             }
+            else {
+                TempData["ErrorMessage"] =  msg;
+                //ModelState.AddModelError("", msg ?? "Unknown error.");
+            }
 
-            ModelState.AddModelError("", msg ?? "Unknown error.");
+            
             ViewBag.Movies = await _service.GetMoviesAsync();
             ViewBag.Rooms = await _service.GetRoomsAsync();
             return View("~/Views/Employee/Screening/AddScreening.cshtml", dto);

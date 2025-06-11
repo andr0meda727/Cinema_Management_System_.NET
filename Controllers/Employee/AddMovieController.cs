@@ -33,10 +33,12 @@ namespace Cinema_Management_System.Controllers.Employee
             if (success)
             {
                 TempData["SuccessMessage"] = "Film został dodany.";
-                return RedirectToAction("Index", "Employee");
+                return View("~/Views/Employee/Movie/AddMovie.cshtml");
+            }
+            else {
+                TempData["ErrorMessage"] = "Film o podanym tytule już istnieje.";
             }
 
-            ModelState.AddModelError("Title", "Film o podanym tytule już istnieje.");
             return View("~/Views/Employee/Movie/AddMovie.cshtml", dto);
         }
     }
