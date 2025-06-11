@@ -1,12 +1,13 @@
 ﻿using Cinema_Management_System.DTOs.Employee;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("EditScreenings")]
 public class EditScreeningController : Controller
 {
-    private readonly EditScreeningService _service;
+    private readonly IEditScreeningService _service;
 
-    public EditScreeningController(EditScreeningService service)
+    public EditScreeningController(IEditScreeningService service)
     {
         _service = service;
     }

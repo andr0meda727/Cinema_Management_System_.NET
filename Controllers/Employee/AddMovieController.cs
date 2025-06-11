@@ -1,6 +1,7 @@
 ﻿using Cinema_Management_System.DTOs.Employee;
 using Cinema_Management_System.DTOs.Screening;
 using Cinema_Management_System.Services.Employee;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,9 @@ namespace Cinema_Management_System.Controllers.Employee
     [Authorize(Roles = "Employee")]
     public class AddMovieController : Controller
     {
-        private readonly AddMovieService _service;
+        private readonly IAddMovieService _service;
 
-        public AddMovieController(AddMovieService service)
+        public AddMovieController(IAddMovieService service)
         {
             _service = service;
         }

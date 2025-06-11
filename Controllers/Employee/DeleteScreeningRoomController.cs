@@ -1,13 +1,14 @@
 ﻿using Cinema_Management_System.Services.Employee;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema_Management_System.Controllers.Employee
 {
     public class DeleteScreeningRoomController : Controller
     {
-        private readonly DeleteScreeningRoomService _service;
+        private readonly IDeleteScreeningRoomService _service;
 
-        public DeleteScreeningRoomController(DeleteScreeningRoomService service)
+        public DeleteScreeningRoomController(IDeleteScreeningRoomService service)
         {
             _service = service;
         }

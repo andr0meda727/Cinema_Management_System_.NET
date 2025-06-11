@@ -1,11 +1,12 @@
 ﻿using Cinema_Management_System.Data;
 using Cinema_Management_System.DTOs.Employee;
 using Cinema_Management_System.Models.Cinema;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cinema_Management_System.Services.Employee
 {
-    public class EditMovieService
+    public class EditMovieService : IEditMovieService
     {
         private readonly CinemaDbContext _db;
         private readonly IWebHostEnvironment _env;

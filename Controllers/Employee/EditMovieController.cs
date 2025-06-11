@@ -1,5 +1,6 @@
 ﻿using Cinema_Management_System.DTOs.Employee;
 using Cinema_Management_System.Services.Employee;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,9 @@ namespace Cinema_Management_System.Controllers.Employee
     [Route("EditMovie")]
     public class EditMovieController : Controller
     {
-        private readonly EditMovieService _service;
+        private readonly IEditMovieService _service;
 
-        public EditMovieController(EditMovieService service)
+        public EditMovieController(IEditMovieService service)
         {
             _service = service;
         }

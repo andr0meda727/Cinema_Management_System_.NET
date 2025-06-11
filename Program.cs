@@ -47,21 +47,19 @@ namespace Cinema_Management_System
             builder.Services.AddScoped<IEmailService, EmailService>();
 
             builder.Services.AddScoped<IAddMovieService, AddMovieService>();
-            builder.Services.AddScoped<DeleteMovieService>();
+            builder.Services.AddScoped<IDeleteMovieService, DeleteMovieService>();
             builder.Services.AddScoped<IBrowseMoviesService, BrowseMoviesService>();
-            builder.Services.AddScoped<EditMovieService>();
-
+            builder.Services.AddScoped<IEditMovieService, EditMovieService>();
 
             builder.Services.AddScoped<IAddScreeningRoomService, AddScreeningRoomService>();
-            builder.Services.AddScoped<DeleteScreeningRoomService>();
-            builder.Services.AddScoped<BrowseScreeningRoomService>();
-            builder.Services.AddScoped<EditScreeningRoomService>();
-
+            builder.Services.AddScoped<IDeleteScreeningRoomService, DeleteScreeningRoomService>();
+            builder.Services.AddScoped<IBrowseScreeningRoomService, BrowseScreeningRoomService>();
+            builder.Services.AddScoped<IEditScreeningRoomService, EditScreeningRoomService>();
 
             builder.Services.AddScoped<IAddScreeningService, AddScreeningService>();
-            builder.Services.AddScoped<DeleteScreeningService>();
-            builder.Services.AddScoped<BrowseScreeningService>();
-            builder.Services.AddScoped<EditScreeningService>();
+            builder.Services.AddScoped<IDeleteScreeningService, DeleteScreeningService>();
+            builder.Services.AddScoped<IBrowseScreeningService, BrowseScreeningService>();
+            builder.Services.AddScoped<IEditScreeningService, EditScreeningService>();
 
 
             //ASP.NET Identity options
