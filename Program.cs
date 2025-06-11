@@ -40,25 +40,29 @@ namespace Cinema_Management_System
             builder.Services.AddScoped<ICookieService, CookieService>();
 
             builder.Services.AddScoped<IScreeningService, ScreeningService>();
-            builder.Services.AddScoped<IAddScreeningRoomService, AddScreeningRoomService>();
 
             builder.Services.AddScoped<ITicketService, TicketService>();
             builder.Services.AddScoped<ITicketPdfService, TicketPdfService>();
 
             builder.Services.AddScoped<IEmailService, EmailService>();
 
-            builder.Services.AddScoped<AddMovieService>();
+            builder.Services.AddScoped<IAddMovieService, AddMovieService>();
             builder.Services.AddScoped<DeleteMovieService>();
-            builder.Services.AddScoped<DeleteScreeningRoomService>();
-            builder.Services.AddScoped<BrowseMoviesService>();
-
+            builder.Services.AddScoped<IBrowseMoviesService, BrowseMoviesService>();
             builder.Services.AddScoped<EditMovieService>();
+
+
+            builder.Services.AddScoped<IAddScreeningRoomService, AddScreeningRoomService>();
+            builder.Services.AddScoped<DeleteScreeningRoomService>();
             builder.Services.AddScoped<BrowseScreeningRoomService>();
             builder.Services.AddScoped<EditScreeningRoomService>();
-            builder.Services.AddScoped<AddScreeningService>();
+
+
+            builder.Services.AddScoped<IAddScreeningService, AddScreeningService>();
             builder.Services.AddScoped<DeleteScreeningService>();
-            builder.Services.AddScoped<EditScreeningService>();
             builder.Services.AddScoped<BrowseScreeningService>();
+            builder.Services.AddScoped<EditScreeningService>();
+
 
             //ASP.NET Identity options
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
