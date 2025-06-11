@@ -2,7 +2,7 @@
 
 <div class="container">
     <h2>Szczegóły sali: @Model.Name</h2>
-    <p>Format ekranu: @Model.Format</p>
+    <p>Format ekranu: @Html.DisplayFor(@Model => @Model.Format)</p>
     <p>Liczba rzędów: @Model.Rows</p>
     <p>Miejsca w rzędzie: @Model.SeatsPerRow</p>
 

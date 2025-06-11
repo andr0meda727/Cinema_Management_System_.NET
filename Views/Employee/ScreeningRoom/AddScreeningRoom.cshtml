@@ -14,20 +14,33 @@
 <form asp-action="Add" asp-controller="AddScreeningRoom" method="post">
     @Html.AntiForgeryToken()
     <div class="form-group">
-        <label asp-for="Name"></label>
+        <label asp-for="Name">Nazwa Sali</label>
         <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+
     </div>
     <div class="form-group">
         <label asp-for="Format"></label>
         <select asp-for="Format" class="form-control" asp-items="Html.GetEnumSelectList<ScreenFormats>()"></select>
+        <span asp-validation-for="Format" class="text-danger"></span>
+
     </div>
     <div class="form-group">
-        <label asp-for="Rows"></label>
+        <label asp-for="Rows">Iloœæ rzêdów</label>
         <input asp-for="Rows" class="form-control" />
+        <span asp-validation-for="Rows" class="text-danger"></span>
+
     </div>
     <div class="form-group">
-        <label asp-for="SeatsPerRow"></label>
+        <label asp-for="SeatsPerRow">Iloœæ siedzeñ w rzêdzie</label>
         <input asp-for="SeatsPerRow" class="form-control" />
+        <span asp-validation-for="SeatsPerRow" class="text-danger"></span>
+
     </div>
     <button type="submit" class="btn btn-primary mt-2">Zapisz</button>
 </form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

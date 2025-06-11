@@ -37,8 +37,7 @@ namespace Cinema_Management_System.Controllers.Employee
                 TempData["SuccessMessage"] = "Sala została dodana pomyślnie.";
                 return View("~/Views/Employee/ScreeningRoom/AddScreeningRoom.cshtml");
             }
-            TempData["ErrorMessage"] = "Wystąpił błąd podczas dodawania sali.";
-            //ModelState.AddModelError("", "Wystąpił błąd podczas dodawania sali.");
+            TempData["ErrorMessage"] = "Wystąpił błąd podczas dodawania sali. Sprawdź czy nazwa nie koliduje z istniejącą";
             return View("~/Views/Employee/ScreeningRoom/AddScreeningRoom.cshtml", dto);
         }
     }
