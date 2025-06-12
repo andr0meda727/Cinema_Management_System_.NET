@@ -15,7 +15,7 @@ namespace Cinema_Management_System.Controllers.User
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(DateTime? date)
+        public async Task<IActionResult> Index([FromQuery] DateTime? date)
         {
             var selectedDate = date ?? DateTime.Today;
             var screenings = await _screeningService.GetScreeningsAsyncDate(selectedDate);
@@ -33,11 +33,14 @@ namespace Cinema_Management_System.Controllers.User
         [Route("Details/{screeningId:int}")]
         public async Task<IActionResult> Details(int screeningId)
         {
+            if (screeningId <= 0)
+                return BadRequest("Invalid screening ID");
+
             var screening = await _screeningService.GetDetailedScreeningByIdAsync(screeningId);
 
             if (screening == null)
             {
-                return NotFound();
+                return NotFound($"Screening with ID {screeningId} not found");
             }
 
             return View(screening);
