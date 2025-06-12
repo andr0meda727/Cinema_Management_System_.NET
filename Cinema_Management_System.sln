@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36109.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cinema_Management_System", "Cinema_Management_System.csproj", "{27CF1BC8-DCB1-441E-84D8-850A21A2E88C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinem_NBomber", "Cinem_NBomber\Cinem_NBomber.csproj", "{76F350F1-796E-42B3-AADA-30C92734E015}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{27CF1BC8-DCB1-441E-84D8-850A21A2E88C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27CF1BC8-DCB1-441E-84D8-850A21A2E88C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27CF1BC8-DCB1-441E-84D8-850A21A2E88C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76F350F1-796E-42B3-AADA-30C92734E015}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76F350F1-796E-42B3-AADA-30C92734E015}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76F350F1-796E-42B3-AADA-30C92734E015}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76F350F1-796E-42B3-AADA-30C92734E015}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

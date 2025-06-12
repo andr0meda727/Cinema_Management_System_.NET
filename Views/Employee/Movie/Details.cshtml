@@ -4,7 +4,7 @@
 <div class="row">
     @if (!string.IsNullOrEmpty(Model.ImagePath))
     {
-        <img src="@Model.ImagePath" alt="Plakat filmu" class="img-fluid mb-3 col"/>
+        <img src="/uploads/@Model.ImagePath" alt="Plakat filmu" class="img-fluid mb-3 col"/>
     }
     <div class="col">
         <p><strong>Długość:</strong> @Model.MovieLength minut</p>
