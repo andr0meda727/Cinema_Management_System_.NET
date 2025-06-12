@@ -47,7 +47,7 @@ namespace Cinema_Management_System.Services.Employee
                         using var stream = new FileStream(filePath, FileMode.Create);
                         await dto.PosterFile.CopyToAsync(stream);
 
-                        savedPath = "/uploads/" + fileName;
+                        savedPath = fileName;
                         _logger.LogInformation("Poster saved to: {Path}", savedPath);
                     }
                     catch (Exception fileEx)

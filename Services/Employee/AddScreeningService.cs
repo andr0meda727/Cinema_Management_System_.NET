@@ -47,7 +47,7 @@ namespace Cinema_Management_System.Services.Employee
                     return (false, "Brak filmu lub sali.");
                 }
 
-                var endTime = dto.StartTime.AddMinutes(movie.MovieLength);
+                var endTime = dto.StartTime.AddMinutes(movie.MovieLength + 15);
 
                 if (dto.StartTime < DateTime.Now)
                 {
