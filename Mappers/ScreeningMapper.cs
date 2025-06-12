@@ -1,5 +1,4 @@
 ﻿using Cinema_Management_System.DTOs.Screening;
-using Cinema_Management_System.Models.Cinema;
 using Riok.Mapperly.Abstractions;
 
 namespace Cinema_Management_System.Mappers;

@@ -63,10 +63,15 @@ namespace Cinema_Management_System.Services.User
 
                 if (takenSeatIds.Any())
                 {
+                    return PurchaseResult.CreateFailureResult($"Seats {string.Join(", ", takenSeatIds)} are already taken");
+                }
+
+
+                if (seats.Count != dto.SeatIds.Count)
+                {
                     var missingSeats = dto.SeatIds.Except(seats.Select(s => s.Id)).ToList();
                     return PurchaseResult.CreateFailureResult($"Seats {string.Join(", ", missingSeats)} not found");
                 }
-        
 
                 var tickets = new List<Ticket>();
                 foreach (var seat in seats)
@@ -125,6 +130,7 @@ namespace Cinema_Management_System.Services.User
                 return PurchaseResult.CreateFailureResult("Error processing your purchase");
             }
         }
+
 
         public async Task<SeatSelectionDTO?> GetSeatSelectionAsync(int screeningId)
         {

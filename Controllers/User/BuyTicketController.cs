@@ -69,13 +69,12 @@ namespace Cinema_Management_System.Controllers.User
                     success = false,
                     message = result.Message ?? "Ticket purchase failed"
                 });
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                return StatusCode(500, new
-                {
-                    success = false,
-                    message = "An unexpected error occurred. Please try again later"
-                });
+                // Log the exception
+                //_logger.LogError(ex, "Error during ticket purchase.");
+                return StatusCode(500, new { success = false, message = "An unexpected error occurred." });
             }
         }
 

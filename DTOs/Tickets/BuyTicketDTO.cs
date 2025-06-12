@@ -10,7 +10,6 @@ namespace Cinema_Management_System.DTOs.Tickets
         [Required, MinLength(1)]
         public List<int> SeatIds { get; set; } = new List<int>();
 
-        [Required]
         public string? UserId { get; set; }
     }
 }
