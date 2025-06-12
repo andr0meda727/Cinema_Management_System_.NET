@@ -206,7 +206,11 @@
                 })
             })
             .then(async res => {
-                const data = await res.json();
+                // const data = await res.json();
+                const text = await res.text(); // Pobierz odpowiedź jako tekst
+                console.log(text); // Sprawdź, co przyszło w odpowiedzi
+                const data = JSON.parse(text); // Parsowanie JSON tylko jeśli odpowiedź jest tekstem JSON
+                console.log(data);
                 if (!res.ok) throw new Error(data.message || "Błąd podczas zakupu biletów.");
                 return data;
             })

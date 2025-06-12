@@ -10,6 +10,7 @@ namespace Cinema_Management_System.Services.Interfaces
         Task<SeatSelectionDTO?> GetSeatSelectionAsync(int screeningId);
         Task<List<BasicTicketDTO>> GetUserBasicTicketsAsync(string userId);
         Task<DetailedTicketDTO> GetUserDetailedTicketAsync(string userId, int ticketId);
-        Task<List<DetailedTicketDTO>> GetTicketSummariesAsync(List<int> ticketIds);
+        Task<List<DetailedTicketDTO>> GetTicketSummariesAsync(string userId, List<int> ticketIds);
+        Task<bool> RefundTicketAsync(string userId, int ticketId);
     }
 }

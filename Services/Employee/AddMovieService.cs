@@ -27,7 +27,8 @@ namespace Cinema_Management_System.Services.Employee
                 }
 
                 _logger.LogInformation("Starting movie creation: {Title}", dto.Title);
-                string? savedPath = null;
+
+                string savedPath = null;
 
                 if (dto.PosterFile != null && dto.PosterFile.Length > 0)
                 {

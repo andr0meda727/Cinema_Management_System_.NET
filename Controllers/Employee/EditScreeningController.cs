@@ -1,7 +1,6 @@
 ﻿using Cinema_Management_System.DTOs.Employee;
 using Cinema_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 [Route("EditScreenings")]
 public class EditScreeningController : Controller

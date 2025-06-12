@@ -1,16 +1,11 @@
-﻿using System.Security.Claims;
-using Cinema_Management_System.DTOs.Auth;
+﻿using Cinema_Management_System.DTOs.Auth;
 using Cinema_Management_System.Models.Users;
 using Cinema_Management_System.Services.Interfaces;
-using Cinema_Management_System.Services.User;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema_Management_System.Controllers
 {
-
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;

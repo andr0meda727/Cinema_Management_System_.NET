@@ -1,7 +1,6 @@
 ﻿using Cinema_Management_System.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Cinema_Management_System.Controllers.Employee
 {

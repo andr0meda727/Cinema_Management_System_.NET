@@ -19,7 +19,8 @@ namespace Cinema_Management_System.Services.User
 
         public async Task<List<BasicScreeningDTO>> GetScreeningsAsyncDate(DateTime date)
         {
-            var currentTime = DateTime.Now;
+            var isToday = date.Date == DateTime.Today;
+            var currentTime = isToday ? DateTime.Now : date.Date;
             var endOfDay = date.Date.AddDays(1).AddTicks(-1);
 
             var screenings = await _context.Screenings
@@ -27,7 +28,7 @@ namespace Cinema_Management_System.Services.User
                 .Where(s => s.DateStartTime >= currentTime && s.DateStartTime <= endOfDay)
                 .OrderBy(s => s.DateStartTime)
                 .ToListAsync();
-
+            
             return screenings.Select(_mapper.ScreeningToBasicScreeningDTOWithShortDesc).ToList();
         }
 

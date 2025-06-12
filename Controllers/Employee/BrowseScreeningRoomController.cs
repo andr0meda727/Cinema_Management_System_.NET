@@ -1,8 +1,6 @@
-﻿using Cinema_Management_System.Services.Employee;
-using Cinema_Management_System.Services.Interfaces;
+﻿using Cinema_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Cinema_Management_System.Controllers.Employee
 {

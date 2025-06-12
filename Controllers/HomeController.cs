@@ -6,7 +6,7 @@ namespace Cinema_Management_System.Controllers
     {
         public IActionResult Index()
         {
-            return View(); // szuka Views/Home/Index.cshtml
+            return View();
         }
     }
 }

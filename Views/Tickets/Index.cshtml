@@ -35,9 +35,13 @@
                         <td>@ticket.DateStartTime.ToString("dd.MM.yyyy HH:mm")</td>
                         <td>@ticket.FinalPrice.ToString("0.00") zł</td>
                         <td>
-                            <a asp-controller="Tickets" asp-action="Details" asp-route-id="@ticket.Id" class="btn btn-sm btn-outline-primary">
+                            <a asp-controller="Tickets" asp-action="Details" asp-route-id="@ticket.Id" class="btn btn-sm btn-outline-primary me-2">
                                 Szczegóły
                             </a>
+                            <form asp-controller="Tickets" asp-action="RefundTicket" asp-route-ticketId="@ticket.Id" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-danger">Zwrot</button>
+                            </form>
                         </td>
                     </tr>
                 }

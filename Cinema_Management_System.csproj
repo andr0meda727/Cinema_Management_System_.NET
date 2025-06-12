@@ -6,9 +6,13 @@
 	<MapperlyDefaultEnabled>true</MapperlyDefaultEnabled>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Controllers\NewFolder\**" />
     <Compile Remove="Views\NewFolder1\**" />
+    <Content Remove="Controllers\NewFolder\**" />
     <Content Remove="Views\NewFolder1\**" />
+    <EmbeddedResource Remove="Controllers\NewFolder\**" />
     <EmbeddedResource Remove="Views\NewFolder1\**" />
+    <None Remove="Controllers\NewFolder\**" />
     <None Remove="Views\NewFolder1\**" />
   </ItemGroup>
   <ItemGroup>

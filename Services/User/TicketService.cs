@@ -5,7 +5,6 @@ using Cinema_Management_System.Mappers;
 using Cinema_Management_System.Models.Cinema;
 using Cinema_Management_System.Services.Helpers;
 using Cinema_Management_System.Services.Interfaces;
-using Cinema_Management_System.Services.PDF;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 
@@ -132,6 +131,7 @@ namespace Cinema_Management_System.Services.User
             }
         }
 
+
         public async Task<SeatSelectionDTO?> GetSeatSelectionAsync(int screeningId)
         {
             var screening = await _context.Screenings
@@ -198,7 +198,7 @@ namespace Cinema_Management_System.Services.User
             return ticket == null ? null : _ticketMapper.TicketToTicketDetailedDTO(ticket);
         }
 
-        public async Task<List<DetailedTicketDTO>> GetTicketSummariesAsync(List<int> ticketIds)
+        public async Task<List<DetailedTicketDTO>> GetTicketSummariesAsync(string userId, List<int> ticketIds)
         {
             return await _context.Tickets
                 .Include(t => t.Screening)
@@ -206,9 +206,39 @@ namespace Cinema_Management_System.Services.User
                 .Include(t => t.Seat)
                 .Include(t => t.Screening)
                     .ThenInclude(s => s.ScreeningRoom)
-                .Where(t => ticketIds.Contains(t.Id))
+                .Where(t => ticketIds.Contains(t.Id) && t.UserId == userId)
                 .Select(t => _ticketMapper.TicketToTicketDetailedDTO(t))
                 .ToListAsync();
+        }
+
+        public async Task<bool> RefundTicketAsync(string userId, int ticketId)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var ticket = await _context.Tickets
+                    .Include(t => t.Screening)
+                    .FirstOrDefaultAsync(t => t.Id == ticketId && t.UserId == userId);
+
+                if (ticket == null) return false;
+
+                if (ticket.Screening.DateStartTime <= DateTime.Now)
+                {
+                    return false;
+                }
+
+                _context.Tickets.Remove(ticket);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+                return true;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                return false;
+            }
         }
     }
 }
