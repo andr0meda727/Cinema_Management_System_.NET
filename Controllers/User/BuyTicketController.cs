@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Cinema_Management_System.Controllers.User
 {
     [Route("BuyTicket")]
+    [Authorize(Roles = "User")]
     public class BuyTicketController : Controller
     {
         private readonly ITicketService _ticketService;
@@ -24,62 +25,83 @@ namespace Cinema_Management_System.Controllers.User
         [Route("ChooseSeat/{screeningId}")]
         public async Task<IActionResult> ChooseSeat(int screeningId)
         {
+            if (screeningId <= 0)
+                return BadRequest("Invalid screening ID");
+
             var dto = await _ticketService.GetSeatSelectionAsync(screeningId);
+
             if (dto == null)
-            {
-                return NotFound();
-            }
+                return NotFound("Screening not found");
 
             return View(dto);
         }
 
-        [HttpPost("Buy")] //vlidateantiforgerytoken
+        [HttpPost("Buy")]
         public async Task<IActionResult> Buy([FromBody] BuyTicketDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(new { success = false, message = "Invalid request" });
+
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return Unauthorized(new { message = "Użytkownik niezalogowany." });
+                return Unauthorized(new { message = "User not authenticated" });
             }
 
             dto.UserId = user.Id;
 
-            var result = await _ticketService.PurchaseTicketsAsync(dto);
-
-            if (result.Success)
+            try
             {
-                return Ok(new
+                var result = await _ticketService.PurchaseTicketsAsync(dto);
+
+                if (result.Success)
                 {
-                    success = true,
-                    ticketIds = result.TicketIds,
+                    return Ok(new
+                    {
+                        success = true,
+                        ticketIds = result.TicketIds,
+                    });
+                }
+
+                return BadRequest(new
+                {
+                    success = false,
+                    message = result.Message ?? "Ticket purchase failed"
+                });
+            } catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "An unexpected error occurred. Please try again later"
                 });
             }
-
-            return BadRequest(new
-            {
-                success = false,
-                message = result.Message ?? "Wystąpił błąd podczas przetwarzania zamówienia."
-            });
         }
 
         [HttpGet("Summary")]
         public async Task<IActionResult> Summary([FromQuery] string ticketIds)
         {
+            if (string.IsNullOrWhiteSpace(ticketIds))
+                return BadRequest("No ticket IDs provided");
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return Unauthorized("User not logged in");
             }
 
-            if (string.IsNullOrEmpty(ticketIds))
+            List<int> ids;
+            try {
+                ids = ticketIds.Split(',').Select(int.Parse).ToList();
+            } catch
             {
-                return BadRequest("No ticket IDs provided");
+                return BadRequest("Invalid ticket ID format");
             }
 
-            var ids = ticketIds.Split(',').Select(int.Parse).ToList();
             var tickets = await _ticketService.GetTicketSummariesAsync(user.Id, ids);
 
-            if (!tickets.Any())
+            if (!tickets.Any() || tickets == null)
             {
                 return NotFound("No tickets found");
             }

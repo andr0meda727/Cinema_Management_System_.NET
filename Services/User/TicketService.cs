@@ -5,7 +5,6 @@ using Cinema_Management_System.Mappers;
 using Cinema_Management_System.Models.Cinema;
 using Cinema_Management_System.Services.Helpers;
 using Cinema_Management_System.Services.Interfaces;
-using Cinema_Management_System.Services.PDF;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 
@@ -64,15 +63,10 @@ namespace Cinema_Management_System.Services.User
 
                 if (takenSeatIds.Any())
                 {
-                    return PurchaseResult.CreateFailureResult($"Seats {string.Join(", ", takenSeatIds)} are already taken");
-                }
-
-
-                if (seats.Count != dto.SeatIds.Count)
-                {
                     var missingSeats = dto.SeatIds.Except(seats.Select(s => s.Id)).ToList();
                     return PurchaseResult.CreateFailureResult($"Seats {string.Join(", ", missingSeats)} not found");
                 }
+        
 
                 var tickets = new List<Ticket>();
                 foreach (var seat in seats)
@@ -146,7 +140,6 @@ namespace Cinema_Management_System.Services.User
                 .ToListAsync();
 
             var takenSeatIds = screening.Tickets
-                .Where(t => t.ScreeningId == screeningId)
                 .Select(t => t.SeatId)
                 .ToList();
 
