@@ -146,6 +146,7 @@ namespace Cinema_Management_System.Services.User
                 .ToListAsync();
 
             var takenSeatIds = screening.Tickets
+                .Where(t => t.ScreeningId == screeningId)
                 .Select(t => t.SeatId)
                 .ToList();
 

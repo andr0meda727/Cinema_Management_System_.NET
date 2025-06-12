@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cinema_Management_System.Controllers
+namespace Cinema_Management_System.Controllers.Admin
 {
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller

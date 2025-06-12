@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema_Management_System.Controllers
 {
-
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
