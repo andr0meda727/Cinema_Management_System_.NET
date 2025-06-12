@@ -3,6 +3,8 @@ using Cinema_Management_System.Models.Users;
 using Cinema_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Cinema_Management_System.Controllers.User
 {
@@ -63,13 +65,19 @@ namespace Cinema_Management_System.Controllers.User
         [HttpGet("Summary")]
         public async Task<IActionResult> Summary([FromQuery] string ticketIds)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized("User not logged in");
+            }
+
             if (string.IsNullOrEmpty(ticketIds))
             {
                 return BadRequest("No ticket IDs provided");
             }
 
             var ids = ticketIds.Split(',').Select(int.Parse).ToList();
-            var tickets = await _ticketService.GetTicketSummariesAsync(ids);
+            var tickets = await _ticketService.GetTicketSummariesAsync(user.Id, ids);
 
             if (!tickets.Any())
             {

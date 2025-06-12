@@ -198,7 +198,7 @@ namespace Cinema_Management_System.Services.User
             return ticket == null ? null : _ticketMapper.TicketToTicketDetailedDTO(ticket);
         }
 
-        public async Task<List<DetailedTicketDTO>> GetTicketSummariesAsync(List<int> ticketIds)
+        public async Task<List<DetailedTicketDTO>> GetTicketSummariesAsync(string userId, List<int> ticketIds)
         {
             return await _context.Tickets
                 .Include(t => t.Screening)
@@ -206,7 +206,7 @@ namespace Cinema_Management_System.Services.User
                 .Include(t => t.Seat)
                 .Include(t => t.Screening)
                     .ThenInclude(s => s.ScreeningRoom)
-                .Where(t => ticketIds.Contains(t.Id))
+                .Where(t => ticketIds.Contains(t.Id) && t.UserId == userId)
                 .Select(t => _ticketMapper.TicketToTicketDetailedDTO(t))
                 .ToListAsync();
         }

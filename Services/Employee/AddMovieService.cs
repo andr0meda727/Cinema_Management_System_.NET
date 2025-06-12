@@ -37,7 +37,7 @@ namespace Cinema_Management_System.Services.Employee
                     await dto.PosterFile.CopyToAsync(stream);
                 }
 
-                savedPath = "/uploads/" + fileName;
+                savedPath = "/uploads/" + fileName; // tu poprawic
             }
 
             var movie = new Movie
