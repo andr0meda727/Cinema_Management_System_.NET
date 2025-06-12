@@ -1,0 +1,34 @@
+﻿@model Cinema_Management_System.DTOs.Employee.EditScreeningDTO
+
+<h2>Edytuj seans</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<form asp-action="Edit" method="post" asp-route-id="@Model.Id">
+    @Html.AntiForgeryToken()
+
+    <!-- Ukryte pola: bardzo ważne -->
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="MovieId" />
+    <input type="hidden" asp-for="ScreeningRoomId" />
+
+    <div class="form-group">
+        <label>Data i godzina rozpoczęcia</label>
+        <input asp-for="DateStartTime" class="form-control" type="datetime-local" />
+    </div>
+
+    <div class="form-group">
+        <label>Cena bazowa</label>
+        <input asp-for="BasePrice" class="form-control" type="number" step="0.01" />
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Zapisz</button>
+    <a asp-action="Index" class="btn btn-secondary mt-3">Anuluj</a>
+</form>

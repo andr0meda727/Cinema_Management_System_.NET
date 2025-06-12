@@ -13,8 +13,8 @@
                             <a class="btn btn-success" asp-controller="Employee" asp-action="AddMovie">
                                 Dodaj nowy film
                             </a>
-                            <a class="btn btn-warning" asp-controller="Employee" asp-action="EditMovies">
-                                Edytuj istniejące filmyy
+                            <a class="btn btn-warning" asp-controller="EditMovie" asp-action="EditMovie">
+                                Edytuj istniejące filmy
                             </a>
                             <a class="btn btn-warning" asp-controller="Employee" asp-action="DeleteMovie">
                                 Skasuj film
@@ -37,7 +37,7 @@
                             <a class="btn btn-success" asp-controller="Employee" asp-action="AddScreeningRoom">
                                 Dodaj nową sale
                             </a>
-                            <a class="btn btn-warning" asp-controller="Employee" asp-action="EditScreeningRooms">
+                            <a class="btn btn-warning" asp-controller="EditScreeningRoom" asp-action="EditScreeningRooms">
                                 Edytuj istniejące sale
                             </a>
                             <a class="btn btn-warning" asp-controller="Employee" asp-action="DeleteScreeningRoom">
@@ -58,16 +58,16 @@
                     </div>
                     <div class="card-body">
                         <div class="d-grid gap-3">
-                            <a class="btn btn-success" asp-controller="Employee" asp-action="AddScreening">
+                            <a class="btn btn-success" asp-controller="AddScreening" asp-action="AddScreening">
                                 Dodaj nowy seans
                             </a>
-                            <a class="btn btn-warning" asp-controller="Employee" asp-action="EditScreenings">
+                            <a class="btn btn-warning" asp-controller="EditScreening" asp-action="Index">
                                 Edytuj istniejące seanse
                             </a>
-                            <a class="btn btn-warning" asp-controller="Employee" asp-action="DeleteScreening">
+                            <a class="btn btn-warning" asp-controller="DeleteScreening" asp-action="DeleteScreening">
                                 Skasuj seans
                             </a>
-                            <a class="btn btn-outline-primary" asp-controller="Employee" asp-action="BrowseScreenings">
+                            <a class="btn btn-outline-primary" asp-controller="BrowseScreening" asp-action="Index">
                                 Przeglądaj wszystkie seanse
                             </a>
                         </div>

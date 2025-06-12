@@ -1,13 +1,14 @@
 ﻿using Cinema_Management_System.Services.Employee;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema_Management_System.Controllers.Employee
 {
     public class DeleteScreeningRoomController : Controller
     {
-        private readonly DeleteScreeningRoomService _service;
+        private readonly IDeleteScreeningRoomService _service;
 
-        public DeleteScreeningRoomController(DeleteScreeningRoomService service)
+        public DeleteScreeningRoomController(IDeleteScreeningRoomService service)
         {
             _service = service;
         }
@@ -22,17 +23,27 @@ namespace Cinema_Management_System.Controllers.Employee
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteScreeningRoom(List<int> selectedScreeningRoomIds)
+        public async Task<IActionResult> DeleteScreeningRoom(List<int> selectedRoomIds)
         {
-            if (selectedScreeningRoomIds.Count == 0)
+            if (selectedRoomIds == null || !selectedRoomIds.Any())
             {
-                TempData["ErrorMessage"] = "Nie wybrano sali do usunięcia.";
-                return RedirectToAction(nameof(DeleteScreeningRoom));
+                TempData["ErrorMessage"] = "Nie wybrano żadnych sal do usunięcia.";
+                return RedirectToAction("DeleteScreeningRoom");
             }
 
-            await _service.DeleteAsync(selectedScreeningRoomIds);
-            TempData["SuccessMessage"] = "Wybrane sale zostały usunięte.";
-            return RedirectToAction(nameof(DeleteScreeningRoom));
+            var (deleted, blocked) = await _service.DeleteAsync(selectedRoomIds);
+
+            if (deleted.Any())
+            {
+                TempData["SuccessMessage"] = $"Usunięto {deleted.Count} sal(e) kinowe.";
+            }
+
+            if (blocked.Any())
+            {
+                TempData["ErrorMessage"] = $"Nie można usunąć {blocked.Count} sal – mają zaplanowane seanse.";
+            }
+
+            return RedirectToAction("DeleteScreeningRoom");
         }
     }
 }

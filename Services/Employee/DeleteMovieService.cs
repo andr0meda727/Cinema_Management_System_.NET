@@ -1,10 +1,11 @@
 ﻿using Cinema_Management_System.Data;
 using Cinema_Management_System.DTOs.Employee;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cinema_Management_System.Services.Employee
 {
-    public class DeleteMovieService
+    public class DeleteMovieService : IDeleteMovieService
     {
         private readonly CinemaDbContext _db;
 
@@ -24,14 +25,31 @@ namespace Cinema_Management_System.Services.Employee
                   .ToListAsync();
         }
 
-        public async Task DeleteAsync(List<int> movieIds)
+        public async Task<(List<int> DeletedIds, List<int> BlockedIds)> DeleteAsync(List<int> movieIds)
         {
-            var moviesToRemove = await _db.Movies
-               .Where(m => movieIds.Contains(m.Id))
-               .ToListAsync();
+            var movies = await _db.Movies
+                .Include(m => m.Screenings)
+                .Where(m => movieIds.Contains(m.Id))
+                .ToListAsync();
 
-            _db.Movies.RemoveRange(moviesToRemove);
-            await _db.SaveChangesAsync();
+            var now = DateTime.Now;
+
+            var blocked = movies
+                .Where(m => m.Screenings.Any(s => s.DateStartTime > now))
+                .Select(m => m.Id)
+                .ToList();
+
+            var deletable = movies
+                .Where(m => !blocked.Contains(m.Id))
+                .ToList();
+
+            if (deletable.Any())
+            {
+                _db.Movies.RemoveRange(deletable);
+                await _db.SaveChangesAsync();
+            }
+
+            return (deletable.Select(m => m.Id).ToList(), blocked);
         }
     }
 }

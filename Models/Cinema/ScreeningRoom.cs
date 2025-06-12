@@ -28,12 +28,12 @@ namespace Cinema_Management_System.Models.Cinema
         public required ScreenFormats Format { get; set; }
 
         [Required]
-        [Range(3, 100)] // min 3 rows
+        [Range(3, 20)] // min 3 rows
         [Display(Name = "Number of Rows")]
         public required int Rows { get; set; }
 
         [Required]
-        [Range(5, 100)] // min 5 seats per row
+        [Range(5, 20)] // min 5 seats per row
         [Display(Name = "Seats Per Row")]
         public required int SeatsPerRow { get; set; }
         public required int NumberOfSeats { get; set; }

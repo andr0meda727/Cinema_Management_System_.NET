@@ -1,0 +1,41 @@
+@model List<Cinema_Management_System.DTOs.Screening.DetailedScreeningDTO>
+
+<h2>Lista seansów</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Tytu³</th>
+            <th>Sala</th>
+            <th>Data</th>
+            <th>Czas trwania</th>
+            <th>Cena</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td>@s.Title</td>
+                <td>@s.ScreeningRoomName (@s.ScreeningRoomFormat)</td>
+                <td>@s.DateStartTime.ToString("g")</td>
+                <td>@(s.DateEndTime - s.DateStartTime)</td>
+                <td>@s.BasePrice z³</td>
+                <td>
+                    <a asp-controller="EditScreening" asp-action="Edit" asp-route-id="@s.Id" class="btn btn-primary btn-sm">Edytuj</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

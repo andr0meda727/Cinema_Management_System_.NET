@@ -2,10 +2,11 @@
 using Cinema_Management_System.DTOs.Employee;
 using Cinema_Management_System.DTOs.Screening;
 using Cinema_Management_System.Models.Cinema;
+using Cinema_Management_System.Services.Interfaces;
 
 namespace Cinema_Management_System.Services.Employee
 {
-    public class AddMovieService
+    public class AddMovieService : IAddMovieService
     {
         private readonly CinemaDbContext _db;
 

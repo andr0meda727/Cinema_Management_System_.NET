@@ -1,0 +1,98 @@
+﻿@model Cinema_Management_System.DTOs.Employee.ScreeningRoomDetailsDTO
+
+<div class="container">
+    <h2>Szczegóły sali: @Model.Name</h2>
+    <p>Format ekranu: @Html.DisplayFor(@Model => @Model.Format)</p>
+    <p>Liczba rzędów: @Model.Rows</p>
+    <p>Miejsca w rzędzie: @Model.SeatsPerRow</p>
+
+    <div class="seat-legend mb-3">
+        <span class="seat standard"></span> Standard
+        <span class="seat vip"></span> VIP
+        <span class="seat double"></span> Double
+    </div>
+
+    <div>
+        <div class="screen"></div>
+        <div>
+            @if (Model?.Seats != null && Model.Seats.Any())
+            {
+                @foreach (var row in Model.Seats.GroupBy(s => s.Row).OrderBy(r => r.Key))
+                {
+                    <div class="seat-row mb-2">
+                        <span class="row-num fw-bold">Rząd @row.Key:</span>
+                        @foreach (var seat in row.OrderBy(s => s.SeatInRow))
+                        {
+                            var seatClass = seat.SeatType.ToString().ToLower();
+                            <button type="button" class="seat @seatClass me-1" disabled>@seat.SeatInRow</button>
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Brak danych o miejscach.</p>
+            }
+        </div>
+    </div>
+
+    <a asp-action="Index" asp-controller="BrowseScreeningRoom" class="btn btn-secondary mt-4">Powrót do listy</a>
+</div>
+
+<style>
+    .screen {
+        height: 20px;
+        width: 100%;
+        background-color: #555;
+        margin: 2em 0 4em;
+        border-radius: 10px;
+        box-shadow: 0px 16px 30px -1px black;
+    }
+
+    .seat {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        width: 40px;
+        height: 40px;
+        border: none;
+        color: white;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .seat.standard {
+            background-color: #007bff;
+        }
+
+        .seat.vip {
+            background-color: #dc3545;
+        }
+
+        .seat.double {
+            background-color: #28a745;
+        }
+
+    .seat-legend span.seat {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin: 0 8px 0 16px;
+        vertical-align: middle;
+    }
+
+    .seat-row {
+        padding: 5px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: center;
+    }
+
+    .row-num {
+        font-size: 1.2rem;
+        position: absolute;
+        left: 15%;
+    }
+</style>
