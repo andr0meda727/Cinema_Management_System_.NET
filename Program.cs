@@ -9,12 +9,11 @@ using Cinema_Management_System.Services.PDF;
 using Cinema_Management_System.Services.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using NLog;
+using NLog.Web;
 
 namespace Cinema_Management_System
 {
@@ -22,124 +21,141 @@ namespace Cinema_Management_System
     {
         public static async Task Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
-            QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+            var logger = LogManager.Setup()
+                .LoadConfigurationFromFile("nlog.config", optional: false)
+                .GetCurrentClassLogger();
 
-            // Add services to the container.
-            builder.Services.AddRazorPages();
-        
-            //databse for users
-            builder.Services.AddDbContext<CinemaDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-            builder.Services.AddScoped<ScreeningMapper>();
-            builder.Services.AddScoped<TicketMapper>();
-            builder.Services.AddScoped<SeatSelectionMapper>();
-
-            builder.Services.AddScoped<IAuthService, AuthService>();
-            builder.Services.AddScoped<ICookieService, CookieService>();
-
-            builder.Services.AddScoped<IScreeningService, ScreeningService>();
-
-            builder.Services.AddScoped<ITicketService, TicketService>();
-            builder.Services.AddScoped<ITicketPdfService, TicketPdfService>();
-
-            builder.Services.AddScoped<IEmailService, EmailService>();
-
-            builder.Services.AddScoped<IAddMovieService, AddMovieService>();
-            builder.Services.AddScoped<IDeleteMovieService, DeleteMovieService>();
-            builder.Services.AddScoped<IBrowseMoviesService, BrowseMoviesService>();
-            builder.Services.AddScoped<IEditMovieService, EditMovieService>();
-
-            builder.Services.AddScoped<IAddScreeningRoomService, AddScreeningRoomService>();
-            builder.Services.AddScoped<IDeleteScreeningRoomService, DeleteScreeningRoomService>();
-            builder.Services.AddScoped<IBrowseScreeningRoomService, BrowseScreeningRoomService>();
-            builder.Services.AddScoped<IEditScreeningRoomService, EditScreeningRoomService>();
-
-            builder.Services.AddScoped<IAddScreeningService, AddScreeningService>();
-            builder.Services.AddScoped<IDeleteScreeningService, DeleteScreeningService>();
-            builder.Services.AddScoped<IBrowseScreeningService, BrowseScreeningService>();
-            builder.Services.AddScoped<IEditScreeningService, EditScreeningService>();
-
-
-            //ASP.NET Identity options
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            try
             {
-                options.SignIn.RequireConfirmedAccount = false;
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredLength = 6;
-            }).AddEntityFrameworkStores<CinemaDbContext>()
-            .AddDefaultTokenProviders();
+                logger.Info("Application is starting...");
+                if (!Directory.Exists("logs"))
+                    Directory.CreateDirectory("logs");
+                logger.Warn("NLog dzia³a — testowy wpis");
+                var builder = WebApplication.CreateBuilder(args);
+                QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
-            var authenticationSettings = new AuthenticationSettings();
+                builder.Logging.ClearProviders();
+                builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information);
+                builder.Host.UseNLog();
 
-            builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
+                builder.Services.AddRazorPages();
 
-            builder.Services.AddSingleton(authenticationSettings);
+                builder.Services.AddDbContext<CinemaDbContext>(options =>
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddAuthentication(option =>
-            {
-                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(cfg =>
-            {
-                cfg.RequireHttpsMetadata = false;
-                cfg.SaveToken = true;
-                cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                builder.Services.AddScoped<ScreeningMapper>();
+                builder.Services.AddScoped<TicketMapper>();
+                builder.Services.AddScoped<SeatSelectionMapper>();
+
+                builder.Services.AddScoped<IAuthService, AuthService>();
+                builder.Services.AddScoped<ICookieService, CookieService>();
+
+                builder.Services.AddScoped<IScreeningService, ScreeningService>();
+                builder.Services.AddScoped<ITicketService, TicketService>();
+                builder.Services.AddScoped<ITicketPdfService, TicketPdfService>();
+                builder.Services.AddScoped<IEmailService, EmailService>();
+
+                builder.Services.AddScoped<IAddMovieService, AddMovieService>();
+                builder.Services.AddScoped<IDeleteMovieService, DeleteMovieService>();
+                builder.Services.AddScoped<IBrowseMoviesService, BrowseMoviesService>();
+                builder.Services.AddScoped<IEditMovieService, EditMovieService>();
+
+                builder.Services.AddScoped<IAddScreeningRoomService, AddScreeningRoomService>();
+                builder.Services.AddScoped<IDeleteScreeningRoomService, DeleteScreeningRoomService>();
+                builder.Services.AddScoped<IBrowseScreeningRoomService, BrowseScreeningRoomService>();
+                builder.Services.AddScoped<IEditScreeningRoomService, EditScreeningRoomService>();
+
+                builder.Services.AddScoped<IAddScreeningService, AddScreeningService>();
+                builder.Services.AddScoped<IDeleteScreeningService, DeleteScreeningService>();
+                builder.Services.AddScoped<IBrowseScreeningService, BrowseScreeningService>();
+                builder.Services.AddScoped<IEditScreeningService, EditScreeningService>();
+
+                builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidIssuer = authenticationSettings.JwtIssuer,
-                    ValidAudience = authenticationSettings.JwtIssuer,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
-                };
-                cfg.Events = new JwtBearerEvents
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequiredLength = 6;
+                }).AddEntityFrameworkStores<CinemaDbContext>()
+                  .AddDefaultTokenProviders();
+
+                var authenticationSettings = new AuthenticationSettings();
+                builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
+                builder.Services.AddSingleton(authenticationSettings);
+
+                builder.Services.AddAuthentication(option =>
                 {
-                    OnMessageReceived = context =>
+                    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }).AddJwtBearer(cfg =>
+                {
+                    cfg.RequireHttpsMetadata = false;
+                    cfg.SaveToken = true;
+                    cfg.TokenValidationParameters = new TokenValidationParameters
                     {
-                        if (context.Request.Cookies.ContainsKey("jwt"))
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidIssuer = authenticationSettings.JwtIssuer,
+                        ValidAudience = authenticationSettings.JwtIssuer,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
+                    };
+                    cfg.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
                         {
-                            context.Token = context.Request.Cookies["jwt"];
+                            if (context.Request.Cookies.ContainsKey("jwt"))
+                            {
+                                context.Token = context.Request.Cookies["jwt"];
+                            }
+                            return Task.CompletedTask;
                         }
-                        return Task.CompletedTask;
-                    }
-                };
-            });
-            
-            builder.Services.AddControllers(); // dla AuthApiController
-            
-            var app = builder.Build();
-            //insert starting roles to db, and admin account
-            using (var scope = app.Services.CreateScope())
-            {
-                await SeedData.InitializeAsync(scope.ServiceProvider);
+                    };
+                });
+
+                builder.Services.AddControllers(); // dla AuthApiController
+
+                var app = builder.Build();
+
+           
+                using (var scope = app.Services.CreateScope())
+                {
+                    await SeedData.InitializeAsync(scope.ServiceProvider);
+                }
+
+                if (!app.Environment.IsDevelopment())
+                {
+                    app.UseExceptionHandler("/Error");
+                    app.UseHsts();
+                }
+
+                app.UseHttpsRedirection();
+                app.UseStaticFiles();
+
+                app.UseRouting();
+                app.UseAuthentication();
+                app.UseAuthorization();
+
+                app.MapControllers(); 
+                app.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                app.MapRazorPages();
+                app.Run();
             }
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
+            catch (Exception ex)
             {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
+                logger.Error(ex, "Application stopped due to exception");
+                throw;
             }
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.MapControllers(); // dla API
-
-            // Domyœlna trasa
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            app.MapRazorPages();
-            app.Run();
+            finally
+            {
+                LogManager.Shutdown();
+            }
         }
     }
 }
