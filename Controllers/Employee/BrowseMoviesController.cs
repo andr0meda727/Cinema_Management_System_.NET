@@ -1,4 +1,5 @@
 ﻿using Cinema_Management_System.Services.Employee;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,9 +8,9 @@ namespace Cinema_Management_System.Controllers.Employee
     [Authorize(Roles = "Employee")]
     public class BrowseMoviesController : Controller
     {
-        private readonly BrowseMoviesService _service;
+        private readonly IBrowseMoviesService _service;
 
-        public BrowseMoviesController(BrowseMoviesService service)
+        public BrowseMoviesController(IBrowseMoviesService service)
         {
             _service = service;
         }

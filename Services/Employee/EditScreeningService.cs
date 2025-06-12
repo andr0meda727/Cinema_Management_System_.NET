@@ -1,9 +1,10 @@
 ﻿using Cinema_Management_System.Data;
 using Cinema_Management_System.DTOs.Employee;
 using Cinema_Management_System.DTOs.Screening;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-public class EditScreeningService
+public class EditScreeningService : IEditScreeningService
 {
     private readonly CinemaDbContext _db;
 

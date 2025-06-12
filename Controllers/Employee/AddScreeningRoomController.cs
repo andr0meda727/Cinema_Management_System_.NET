@@ -1,5 +1,6 @@
 ﻿using Cinema_Management_System.DTOs.Employee;
 using Cinema_Management_System.Services.Employee;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,14 +8,14 @@ namespace Cinema_Management_System.Controllers.Employee
 {
     [Authorize(Roles = "Employee")]
 
-    public class ScreeningRoomController : Controller
+    public class AddScreeningRoomController : Controller
     {
-        private readonly ScreeningRoomService _service;
+        private readonly IAddScreeningRoomService _service;
 
-        public ScreeningRoomController(ScreeningRoomService service)
-        {
+        public AddScreeningRoomController(IAddScreeningRoomService service) {
             _service = service;
         }
+       
 
         [HttpGet]
         public IActionResult Add()
@@ -34,10 +35,9 @@ namespace Cinema_Management_System.Controllers.Employee
             if (success)
             {
                 TempData["SuccessMessage"] = "Sala została dodana pomyślnie.";
-                return RedirectToAction("Index", "Employee");
+                return View("~/Views/Employee/ScreeningRoom/AddScreeningRoom.cshtml");
             }
-
-            ModelState.AddModelError("", "Wystąpił błąd podczas dodawania sali.");
+            TempData["ErrorMessage"] = "Wystąpił błąd podczas dodawania sali. Sprawdź czy nazwa nie koliduje z istniejącą";
             return View("~/Views/Employee/ScreeningRoom/AddScreeningRoom.cshtml", dto);
         }
     }

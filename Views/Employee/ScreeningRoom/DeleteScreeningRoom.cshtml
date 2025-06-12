@@ -1,7 +1,15 @@
 @model List<Cinema_Management_System.DTOs.Employee.DeleteScreeningRoomDTO>
 
-<h2>Usuñ filmy</h2>
+<h2>Usuñ Sale</h2>
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
 
 <form asp-action="DeleteScreeningRoom" asp-controller="DeleteScreeningRoom" method="post">
     <table class="table table-striped">

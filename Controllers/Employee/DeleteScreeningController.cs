@@ -1,4 +1,5 @@
 ﻿using Cinema_Management_System.Services.Employee;
+using Cinema_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,9 +8,9 @@ namespace Cinema_Management_System.Controllers.Employee
     [Authorize(Roles = "Employee")]
     public class DeleteScreeningController : Controller
     {
-        private readonly DeleteScreeningService _service;
+        private readonly IDeleteScreeningService _service;
 
-        public DeleteScreeningController(DeleteScreeningService service)
+        public DeleteScreeningController(IDeleteScreeningService service)
         {
             _service = service;
         }

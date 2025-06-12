@@ -40,25 +40,27 @@ namespace Cinema_Management_System
             builder.Services.AddScoped<ICookieService, CookieService>();
 
             builder.Services.AddScoped<IScreeningService, ScreeningService>();
-            builder.Services.AddScoped<IScreeningRoomService, ScreeningRoomService>();
 
             builder.Services.AddScoped<ITicketService, TicketService>();
             builder.Services.AddScoped<ITicketPdfService, TicketPdfService>();
 
             builder.Services.AddScoped<IEmailService, EmailService>();
 
-            builder.Services.AddScoped<AddMovieService>();
-            builder.Services.AddScoped<DeleteMovieService>();
-            builder.Services.AddScoped<DeleteScreeningRoomService>();
-            builder.Services.AddScoped<BrowseMoviesService>();
+            builder.Services.AddScoped<IAddMovieService, AddMovieService>();
+            builder.Services.AddScoped<IDeleteMovieService, DeleteMovieService>();
+            builder.Services.AddScoped<IBrowseMoviesService, BrowseMoviesService>();
+            builder.Services.AddScoped<IEditMovieService, EditMovieService>();
 
-            builder.Services.AddScoped<EditMovieService>();
-            builder.Services.AddScoped<BrowseScreeningRoomService>();
-            builder.Services.AddScoped<EditScreeningRoomService>();
-            builder.Services.AddScoped<AddScreeningService>();
-            builder.Services.AddScoped<DeleteScreeningService>();
-            builder.Services.AddScoped<EditScreeningService>();
-            builder.Services.AddScoped<BrowseScreeningService>();
+            builder.Services.AddScoped<IAddScreeningRoomService, AddScreeningRoomService>();
+            builder.Services.AddScoped<IDeleteScreeningRoomService, DeleteScreeningRoomService>();
+            builder.Services.AddScoped<IBrowseScreeningRoomService, BrowseScreeningRoomService>();
+            builder.Services.AddScoped<IEditScreeningRoomService, EditScreeningRoomService>();
+
+            builder.Services.AddScoped<IAddScreeningService, AddScreeningService>();
+            builder.Services.AddScoped<IDeleteScreeningService, DeleteScreeningService>();
+            builder.Services.AddScoped<IBrowseScreeningService, BrowseScreeningService>();
+            builder.Services.AddScoped<IEditScreeningService, EditScreeningService>();
+
 
             //ASP.NET Identity options
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>

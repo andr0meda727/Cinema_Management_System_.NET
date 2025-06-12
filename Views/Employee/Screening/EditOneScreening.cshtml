@@ -2,10 +2,15 @@
 
 <h2>Edytuj seans</h2>
 
-@if (ViewBag.ErrorMessage != null)
+@if (TempData["SuccessMessage"] != null)
 {
-    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
 }
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
 <form asp-action="Edit" method="post" asp-route-id="@Model.Id">
     @Html.AntiForgeryToken()
 
