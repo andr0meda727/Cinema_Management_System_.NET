@@ -130,7 +130,6 @@ The solution includes a GitHub Actions workflow (`dotnet-ci.yml`) that:
 
 * Builds the solution (`dotnet build`)
 * Runs tests (`dotnet test`)
-* Optionally builds and pushes a Docker image (if configured)
 
 ---
 
